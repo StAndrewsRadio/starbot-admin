@@ -1,0 +1,43 @@
+[general]
+debug     = false
+guild     = "GUILD ID HERE"
+forwarder = "FORWARDER BOT ID HERE OR EMPTY"
+
+[bot]
+token  = "TOKEN SECRET HERE"
+prefix = "!"
+
+[user]
+email    = "EMAIL HERE"
+password = "PASSWORD HERE"
+token    = "TOKEN HERE - OBTAIN WITH 'starbot-forwarder get-token email password'"
+
+[database]
+file = "database.db"
+
+[roles]
+moderator = "ROLE ID HERE"
+onAir     = "ROLE ID HERE"
+
+[channels]
+studio      = "CHANNEL ID HERE"
+controlRoom = "CHANNEL ID HERE"
+
+[autoplay]
+announce = "As there's nobody in the studio at the moment, I'm going to start autoplay."
+commands = [ "LIST", " COMMANDS", "HERE" ]
+
+[msg]
+syntaxError = "Incorrect syntax: "
+invalidTime = "The time provided was incorrect. Please use a format like Monday 3PM."
+
+invite.invited = "<@%s> has been invited to the studio."
+
+register.newShow  = "<@%s> has been registered as the key show host for *%s* on %s at %s."
+register.replaced = "<@%s> has been registered as the key show host for *%s* on %s at %s, replacing <@%s> who hosted *%s*."
+
+show.noShowFound = "There is no show registered at that time."
+show.showFound   = "The show on %s at %s is called *%s* and the key show host is <@%s>."
+
+[testing]
+quickerJobs = false
