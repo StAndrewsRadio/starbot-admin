@@ -23,9 +23,9 @@ type CommandManager struct {
 	*cfg.Config
 	*db.Database
 
-	Prefix string
+	Prefix       string
 	PrefixLength int
-	Commands map[string]Command
+	Commands     map[string]Command
 }
 
 // Makes a new command manager, filling in all available commands.
@@ -41,10 +41,11 @@ func New(config *cfg.Config, database *db.Database) *CommandManager {
 	}
 
 	// fill in commands
-	commandMap["help"]     = cmdHelp{mgr}
+	commandMap["help"] = cmdHelp{mgr}
 	commandMap["register"] = cmdRegister{mgr}
-	commandMap["show"]     = cmdShow{mgr}
-	commandMap["invite"]   = cmdInvite{mgr}
+	commandMap["show"] = cmdShow{mgr}
+	commandMap["invite"] = cmdInvite{mgr}
+	commandMap["unregister"] = cmdUnregister{mgr}
 
 	logrus.WithField("cmds", len(commandMap)).Debug("New command manager created!")
 
@@ -77,7 +78,7 @@ func (manager *CommandManager) CommandForwarder(session *discordgo.Session, mess
 			err, str := cmdExecutor.handler(session, message), "There was an error whilst executing that command!"
 
 			if err != nil {
-				_, secondErr := session.ChannelMessageSend(message.ChannelID, str + "\n" + err.Error())
+				_, secondErr := session.ChannelMessageSend(message.ChannelID, str+"\n"+err.Error())
 				if secondErr != nil {
 					logrus.WithError(secondErr).Error("There was an error whilst sending a message to the server!")
 				}
