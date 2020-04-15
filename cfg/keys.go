@@ -5,14 +5,14 @@ const (
 	GeneralGuild     = "general.guild"
 	GeneralForwarder = "general.forwarder"
 
-	BotPrefix  = "bot.prefix"
-	BotToken   = "bot.token"
+	BotPrefix = "bot.prefix"
+	BotToken  = "bot.token"
 
 	UserEmail    = "user.email"
 	UserPassword = "user.password"
 	UserToken    = "user.token"
 
-	DbFile    = "database.file"
+	DbFile = "database.file"
 
 	RoleModerator = "roles.moderator"
 	RoleOnAir     = "roles.onAir"
@@ -26,13 +26,16 @@ const (
 	MsgSyntaxError = "msg.syntaxError"
 	MsgInvalidTime = "msg.invalidTime"
 
-	MsgCmdInvite   = "msg.invite.invited"
+	MsgCmdInvite = "msg.invite.invited"
 
 	MsgCmdRegisterNewShow  = "msg.register.newShow"
 	MsgCmdRegisterReplaced = "msg.register.replaced"
 
 	MsgCmdShowNotFound = "msg.show.showNotFound"
 	MsgCmdShowFound    = "msg.show.showFound"
+
+	MsgCmdUnregisterNotFound = "msg.unregister.noShowFound"
+	MsgCmdUnregisterDeleted  = "msg.unregister.showDeleted"
 
 	TestingQuickerJobs = "testing.quickerJobs"
 )

@@ -19,7 +19,7 @@ func (database *Database) GetShow(day, hour string) (Show, error) {
 		Day:  day,
 		Hour: hour,
 	}
-	
+
 	// load the show from the database
 	err := database.db.View(func(tx *buntdb.Tx) error {
 		return fillShowFromTransaction(&show, tx)
@@ -50,12 +50,12 @@ func (database *Database) PutShow(show Show) (Show, bool, error) {
 		showTime := show.Day + " " + show.Hour
 
 		// set the new show
-		_, _, err = tx.Set(ShowPrefix + showTime + HostSuffix, show.KeyHost, nil)
+		_, _, err = tx.Set(ShowPrefix+showTime+HostSuffix, show.KeyHost, nil)
 		if err != nil {
 			return err
 		}
 
-		_, _, err = tx.Set(ShowPrefix + showTime + NameSuffix, show.Name, nil)
+		_, _, err = tx.Set(ShowPrefix+showTime+NameSuffix, show.Name, nil)
 		if err != nil {
 			return err
 		}
@@ -68,6 +68,27 @@ func (database *Database) PutShow(show Show) (Show, bool, error) {
 
 	// now just return everything
 	return oldShow, oldShow.Name != "", nil
+}
+
+// Deletes a show from the database.
+func (database *Database) DeleteShow(day, hour string) error {
+	err := database.db.Update(func(tx *buntdb.Tx) error {
+		showTime := day + " " + hour
+
+		_, err := tx.Delete(ShowPrefix + showTime + HostSuffix)
+		if err != nil {
+			return err
+		}
+
+		_, err = tx.Delete(ShowPrefix + showTime + NameSuffix)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	return err
 }
 
 // Obtains a show given a time, filling it in from a transaction.
