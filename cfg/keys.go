@@ -34,6 +34,8 @@ const (
 	MsgCmdShowNotFound = "msg.show.showNotFound"
 	MsgCmdShowFound    = "msg.show.showFound"
 
+	MsgCmdUninvite = "msg.uninvite.uninvited"
+
 	MsgCmdUnregisterNotFound = "msg.unregister.noShowFound"
 	MsgCmdUnregisterDeleted  = "msg.unregister.showDeleted"
 

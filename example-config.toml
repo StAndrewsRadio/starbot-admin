@@ -39,6 +39,8 @@ register.replaced = "<@%s> has been registered as the key show host for *%s* on 
 show.noShowFound = "There is no show registered at that time."
 show.showFound   = "The show on %s at %s is called *%s* and the key show host is <@%s>."
 
+uninvite.uninvited = "<@%s> has been booted out of the studio."
+
 unregister.noShowFound = "There is no show registered at that time."
 unregister.showDeleted = "The show on %s at %s has been unregistered."
 

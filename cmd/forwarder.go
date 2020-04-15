@@ -45,6 +45,7 @@ func New(config *cfg.Config, database *db.Database) *CommandManager {
 	commandMap["register"] = cmdRegister{mgr}
 	commandMap["show"] = cmdShow{mgr}
 	commandMap["invite"] = cmdInvite{mgr}
+	commandMap["uninvite"] = cmdUninvite{mgr}
 	commandMap["unregister"] = cmdUnregister{mgr}
 
 	logrus.WithField("cmds", len(commandMap)).Debug("New command manager created!")
