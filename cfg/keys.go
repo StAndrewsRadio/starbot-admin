@@ -1,9 +1,8 @@
 package cfg
 
 const (
-	GeneralDebug     = "general.debug"
-	GeneralGuild     = "general.guild"
-	GeneralForwarder = "general.forwarder"
+	GeneralDebug = "general.debug"
+	GeneralGuild = "general.guild"
 
 	BotPrefix = "bot.prefix"
 	BotToken  = "bot.token"
@@ -20,8 +19,9 @@ const (
 	ChannelStudio      = "channels.studio"
 	ChannelControlRoom = "channels.controlRoom"
 
-	AutoplayAnnounce = "autoplay.announce"
-	AutoplayCommands = "autoplay.commands"
+	AutoplayAnnounce     = "autoplay.announce"
+	AutoplayCommands     = "autoplay.commands"
+	AutoplayIgnoredUsers = "autoplay.ignoredUsers"
 
 	MsgSyntaxError = "msg.syntaxError"
 	MsgInvalidTime = "msg.invalidTime"

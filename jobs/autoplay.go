@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/StAndrewsRadio/starbot-admin/cfg"
+	"github.com/StAndrewsRadio/starbot-admin/utils"
 	"github.com/jasonlvhit/gocron"
 	"github.com/sirupsen/logrus"
 )
@@ -51,12 +52,12 @@ func autoplayJob() {
 	}
 
 	numInStudio := 0
-	studioID, forwarderID := config.GetString(cfg.ChannelStudio), config.GetString(cfg.GeneralForwarder)
+	studioID, forwarderID := config.GetString(cfg.ChannelStudio), config.GetStrings(cfg.AutoplayIgnoredUsers)
 
 	// iterate through every voice state
 	for _, voiceState := range guild.VoiceStates {
 		// if the state represents a user in the studio that isn't a forwarder, increment the number
-		if voiceState.ChannelID == studioID && voiceState.UserID != forwarderID {
+		if voiceState.ChannelID == studioID && !utils.StringSliceContains(forwarderID, voiceState.UserID) {
 			numInStudio++
 		}
 	}

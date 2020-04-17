@@ -1,7 +1,6 @@
 [general]
 debug     = false
 guild     = "GUILD ID HERE"
-forwarder = "FORWARDER BOT ID HERE OR EMPTY"
 
 [bot]
 token  = "TOKEN SECRET HERE"
@@ -26,6 +25,7 @@ controlRoom = "CHANNEL ID HERE"
 [autoplay]
 announce = "As there's nobody in the studio at the moment, I'm going to start autoplay."
 commands = [ "LIST", " COMMANDS", "HERE" ]
+ignoredUsers = [ "FORWARDER BOT HERE", "MUSIC BOT HERE" ]
 
 [msg]
 syntaxError = "Incorrect syntax: "
