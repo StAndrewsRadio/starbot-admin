@@ -4,7 +4,6 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
 	"github.com/StAndrewsRadio/starbot-admin/cfg"
 	"github.com/StAndrewsRadio/starbot-admin/cmd"
@@ -21,8 +20,6 @@ var (
 	session     *discordgo.Session
 	userSession *discordgo.Session
 	err         error
-
-	ready = make(map[string]bool)
 )
 
 func main() {
@@ -74,8 +71,6 @@ func main() {
 	commander = cmd.New(config, database)
 
 	// register handlers
-	userSession.AddHandler(readyHandler)
-	session.AddHandler(readyHandler)
 	session.AddHandler(commander.CommandForwarder)
 
 	// open the bot session
@@ -88,12 +83,6 @@ func main() {
 	err = userSession.Open()
 	if err != nil {
 		logrus.WithError(err).Fatal("There was an error whilst opening the user connection to Discord!")
-	}
-
-	// wait until the ready handler has called, giving us a valid open session to use
-	logrus.Info("Waiting for ready signal...")
-	for ready[session.Token] == true && ready[userSession.Token] == true {
-		time.Sleep(1 * time.Second)
 	}
 
 	go jobs.ScheduleEvents(config, database, session, userSession)
@@ -117,14 +106,6 @@ func main() {
 	err = userSession.Close()
 	if err != nil {
 		logrus.WithError(err).Error("There was an error whilst closing the user connection to Discord!")
-	}
-}
-
-func readyHandler(readySession *discordgo.Session, event *discordgo.Event) {
-	// ignore sessions that are already ready
-	if !ready[readySession.Token] {
-		logrus.WithField("token", session.Token).Debug("Received ready signal!")
-		ready[readySession.Token] = true
 	}
 }
 
