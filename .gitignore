@@ -16,6 +16,7 @@
 # project specific stuff
 config.toml
 *.db
+starbot-admin
 
 # ide stuff
 .idea
