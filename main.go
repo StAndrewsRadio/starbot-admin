@@ -103,6 +103,15 @@ func main() {
 		logrus.WithError(err).Error("There was an error whilst closing the bot connection to Discord!")
 	}
 
+	voice := userSession.VoiceConnections[config.GetString(cfg.GeneralGuild)]
+	if voice != nil {
+		voice.Close()
+		err = voice.Disconnect()
+		if err != nil {
+			logrus.WithError(err).Error("An error occurred whilst closing the current user voice session.")
+		}
+	}
+
 	err = userSession.Close()
 	if err != nil {
 		logrus.WithError(err).Error("There was an error whilst closing the user connection to Discord!")
