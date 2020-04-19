@@ -57,7 +57,8 @@ func autoplayJob() {
 	// iterate through every voice state
 	for _, voiceState := range guild.VoiceStates {
 		// if the state represents a user in the studio that isn't a forwarder, increment the number
-		if voiceState.ChannelID == studioID && !utils.StringSliceContains(forwarderID, voiceState.UserID) {
+		if voiceState.ChannelID == studioID && !utils.StringSliceContains(forwarderID, voiceState.UserID) &&
+			voiceState.UserID != userSession.State.User.ID {
 			numInStudio++
 		}
 	}
