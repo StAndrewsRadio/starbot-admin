@@ -75,7 +75,7 @@ func autoplayJob() {
 		}
 
 		// wait a mo
-		time.Sleep(5 * time.Second)
+		time.Sleep(3 * time.Second)
 
 		// announce that we're starting autoplayJob
 		_, err = userSession.ChannelMessageSend(controlRoomID, config.GetString(cfg.AutoplayAnnounce))
@@ -85,18 +85,20 @@ func autoplayJob() {
 
 		// iterate through all commands
 		for _, command := range config.GetStrings(cfg.AutoplayCommands) {
+			// wait a mo
+			time.Sleep(5 * time.Second)
+
 			// send the command
 			_, err := userSession.ChannelMessageSend(controlRoomID, command)
 			if err != nil {
 				autoplayLogger.WithField("cmd", command).WithError(err).
 					Error("An error occurred whilst sending a command.")
 			}
-
-			// wait one second
-			time.Sleep(5 * time.Second)
 		}
 
 		// finally, leave the studio
+		autoplayLogger.Debug("Leaving the studio...")
+		join.Close()
 		err = join.Disconnect()
 		if err != nil {
 			autoplayLogger.WithError(err).Error("An error occurred whilst leaving the studio.")
