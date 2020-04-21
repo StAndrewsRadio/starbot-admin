@@ -11,6 +11,12 @@ email    = "EMAIL HERE"
 password = "PASSWORD HERE"
 token    = "TOKEN HERE - OBTAIN WITH 'starbot-forwarder get-token email password'"
 
+[email]
+domain   = "smtp.gmail.com"
+port     = 587
+address  = "example@gmail.com"
+password = "some important password"
+
 [database]
 file = "database.db"
 

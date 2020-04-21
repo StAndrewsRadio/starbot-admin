@@ -11,6 +11,11 @@ const (
 	UserPassword = "user.password"
 	UserToken    = "user.token"
 
+	EmailDomain   = "email.domain"
+	EmailPort     = "email.port"
+	EmailAddress  = "email.address"
+	EmailPassword = "email.password"
+
 	DbFile = "database.file"
 
 	RoleModerator = "roles.moderator"

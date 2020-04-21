@@ -11,6 +11,7 @@ import (
 	"github.com/StAndrewsRadio/starbot-admin/cmd"
 	"github.com/StAndrewsRadio/starbot-admin/db"
 	"github.com/StAndrewsRadio/starbot-admin/jobs"
+	"github.com/StAndrewsRadio/starbot-admin/utils"
 	"github.com/bwmarrin/discordgo"
 	"github.com/sirupsen/logrus"
 )
@@ -21,6 +22,7 @@ var (
 	commander   *cmd.CommandManager
 	session     *discordgo.Session
 	userSession *discordgo.Session
+	emailer     *utils.Emailer
 	err         error
 )
 
@@ -52,6 +54,9 @@ func main() {
 		logrus.Info("Enabling debug logging...")
 		logrus.SetLevel(logrus.DebugLevel)
 	}
+
+	// get the emailer
+	emailer = utils.NewEmailer(config)
 
 	// open the database
 	database, err = db.Open(config.GetString(cfg.DbFile))

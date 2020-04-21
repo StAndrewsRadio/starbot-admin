@@ -39,3 +39,8 @@ func (config *Config) GetStrings(key string) []string {
 func (config *Config) GetBool(key string) bool {
 	return config.tree.Get(key).(bool)
 }
+
+// Gets an int from the config, given a key.
+func (config *Config) GetInt(key string) int {
+	return config.tree.Get(key).(int)
+}
