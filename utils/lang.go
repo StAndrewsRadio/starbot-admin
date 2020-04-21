@@ -1,5 +1,11 @@
 package utils
 
+import "math/rand"
+
+var (
+	alphabet = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+)
+
 // Returns the substring of a string, cut from the start index to the end index.
 func Substring(s string, start, end int) string {
 	var startIndex, currentIndex int
@@ -28,4 +34,16 @@ func StringSliceContains(slice []string, string string) bool {
 	}
 
 	return false
+}
+
+// Returns a random string of letters of a given length.
+func RandomString(length int) string {
+	result := make([]rune, length)
+
+	// iterate through every letter we need
+	for i := range result {
+		result[i] = alphabet[rand.Intn(len(alphabet))]
+	}
+
+	return string(result)
 }

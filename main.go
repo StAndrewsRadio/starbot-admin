@@ -1,9 +1,11 @@
 package main
 
 import (
+	"math/rand"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/StAndrewsRadio/starbot-admin/cfg"
 	"github.com/StAndrewsRadio/starbot-admin/cmd"
@@ -23,6 +25,9 @@ var (
 )
 
 func main() {
+	// seed random
+	rand.Seed(time.Now().UnixNano())
+
 	// parse arguments
 	args := os.Args
 
