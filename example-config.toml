@@ -28,21 +28,18 @@ commands     = [ "LIST", " COMMANDS", "HERE" ]
 ignoredUsers = [ "FORWARDER BOT HERE", "MUSIC BOT HERE" ]
 
 [msg]
-syntaxError = "Incorrect syntax: "
-invalidTime = "The time provided was incorrect. Please use a format like Monday 3PM."
-
-invite.invited = "<@%s> has been invited to the studio."
-
-register.newShow  = "<@%s> has been registered as the key show host for *%s* on %s at %s."
-register.replaced = "<@%s> has been registered as the key show host for *%s* on %s at %s, replacing <@%s> who hosted *%s*."
-
-show.noShowFound = "There is no show registered at that time."
-show.showFound   = "The show on %s at %s is called *%s* and the key show host is <@%s>."
-
-uninvite.uninvited = "<@%s> has been booted out of the studio."
-
-unregister.noShowFound = "There is no show registered at that time."
-unregister.showDeleted = "The show on %s at %s has been unregistered."
+syntaxError           = "Incorrect syntax: "
+invalidTime           = "The time provided was incorrect. Please use a format like Monday 3PM."
+inviteInvited         = "<@%s> has been invited to the studio."
+registerNewShow       = "<@%s> has been registered as the key show host for *%s* on %s at %s."
+registerReplaced      = "<@%s> has been registered as the key show host for *%s* on %s at %s, replacing <@%s> who hosted *%s*."
+showNoShowFound       = "There is no show registered at that time."
+showShowFound         = "The show on %s at %s is called *%s* and the key show host is <@%s>."
+showsembedSet         = "The shows embed has been created in <#%s>."
+showsembedReplaced    = "The shows embed has been moved to <#%s>. The old embed will not be updated and will need to be manually deleted."
+uninviteUninvited     = "<@%s> has been booted out of the studio."
+unregisterNoShowFound = "There is no show registered at that time."
+unregisterShowDeleted = "The show on %s at %s has been unregistered."
 
 [testing]
 quickerJobs = false

@@ -22,7 +22,7 @@ func (database *Database) GetShow(day, hour string) (Show, error) {
 
 	// load the show from the database
 	err := database.db.View(func(tx *buntdb.Tx) error {
-		return fillShowFromTransaction(&show, tx)
+		return FillShowFromTransaction(&show, tx)
 	})
 
 	// return the error if we got one
@@ -42,7 +42,7 @@ func (database *Database) PutShow(show Show) (Show, bool, error) {
 
 	err := database.db.Update(func(tx *buntdb.Tx) error {
 		// try and get the old show, ignoring a not found error
-		err := fillShowFromTransaction(&oldShow, tx)
+		err := FillShowFromTransaction(&oldShow, tx)
 		if err != nil && err != buntdb.ErrNotFound {
 			return err
 		}
@@ -92,7 +92,7 @@ func (database *Database) DeleteShow(day, hour string) error {
 }
 
 // Obtains a show given a time, filling it in from a transaction.
-func fillShowFromTransaction(show *Show, tx *buntdb.Tx) error {
+func FillShowFromTransaction(show *Show, tx *buntdb.Tx) error {
 	showTime := show.Day + " " + show.Hour
 
 	logrus.WithField("show", showTime).Debug("Getting show from database...")

@@ -7,6 +7,7 @@ import (
 
 	"github.com/StAndrewsRadio/starbot-admin/cfg"
 	"github.com/StAndrewsRadio/starbot-admin/db"
+	"github.com/StAndrewsRadio/starbot-admin/jobs"
 	"github.com/StAndrewsRadio/starbot-admin/utils"
 	"github.com/bwmarrin/discordgo"
 	"github.com/sirupsen/logrus"
@@ -68,6 +69,8 @@ func (cmd cmdUnregister) handler(session *discordgo.Session, message *discordgo.
 			} else if err != nil {
 				return err
 			} else {
+				go jobs.UpdateShowsEmbed()
+
 				_, secondErr := session.ChannelMessageSend(message.ChannelID,
 					fmt.Sprintf(cmd.GetString(cfg.MsgCmdUnregisterDeleted), day, hour))
 				if secondErr != nil {

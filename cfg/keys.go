@@ -23,21 +23,18 @@ const (
 	AutoplayCommands     = "autoplay.commands"
 	AutoplayIgnoredUsers = "autoplay.ignoredUsers"
 
-	MsgSyntaxError = "msg.syntaxError"
-	MsgInvalidTime = "msg.invalidTime"
-
-	MsgCmdInvite = "msg.invite.invited"
-
-	MsgCmdRegisterNewShow  = "msg.register.newShow"
-	MsgCmdRegisterReplaced = "msg.register.replaced"
-
-	MsgCmdShowNotFound = "msg.show.showNotFound"
-	MsgCmdShowFound    = "msg.show.showFound"
-
-	MsgCmdUninvite = "msg.uninvite.uninvited"
-
-	MsgCmdUnregisterNotFound = "msg.unregister.noShowFound"
-	MsgCmdUnregisterDeleted  = "msg.unregister.showDeleted"
+	MsgSyntaxError           = "msg.syntaxError"
+	MsgInvalidTime           = "msg.invalidTime"
+	MsgCmdInvite             = "msg.inviteInvited"
+	MsgCmdRegisterNewShow    = "msg.registerNewShow"
+	MsgCmdRegisterReplaced   = "msg.registerReplaced"
+	MsgCmdShowNotFound       = "msg.showNoShowFound"
+	MsgCmdShowFound          = "msg.showShowFound"
+	MsgCmdShowsEmbedSet      = "msg.showsembedSet"
+	MsgCmdShowsEmbedReplaced = "msg.showsembedReplaced"
+	MsgCmdUninvite           = "msg.uninviteUninvited"
+	MsgCmdUnregisterNotFound = "msg.unregisterNoShowFound"
+	MsgCmdUnregisterDeleted  = "msg.unregisterShowDeleted"
 
 	TestingQuickerJobs = "testing.quickerJobs"
 )

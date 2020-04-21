@@ -41,10 +41,11 @@ func New(config *cfg.Config, database *db.Database) *CommandManager {
 	}
 
 	// fill in commands
+	commandMap["embedshows"] = cmdEmbedShows{mgr}
 	commandMap["help"] = cmdHelp{mgr}
+	commandMap["invite"] = cmdInvite{mgr}
 	commandMap["register"] = cmdRegister{mgr}
 	commandMap["show"] = cmdShow{mgr}
-	commandMap["invite"] = cmdInvite{mgr}
 	commandMap["uninvite"] = cmdUninvite{mgr}
 	commandMap["unregister"] = cmdUnregister{mgr}
 

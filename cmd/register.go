@@ -7,12 +7,13 @@ import (
 
 	"github.com/StAndrewsRadio/starbot-admin/cfg"
 	"github.com/StAndrewsRadio/starbot-admin/db"
+	"github.com/StAndrewsRadio/starbot-admin/jobs"
 	"github.com/StAndrewsRadio/starbot-admin/utils"
 	"github.com/bwmarrin/discordgo"
 	"github.com/sirupsen/logrus"
 )
 
-type cmdRegister struct{
+type cmdRegister struct {
 	*CommandManager
 }
 
@@ -35,7 +36,7 @@ func (cmdRegister cmdRegister) handler(session *discordgo.Session, message *disc
 
 		// syntax check
 		if len(args) != 5 {
-			_, err := session.ChannelMessageSend(message.ChannelID, cmdRegister.GetString(cfg.MsgSyntaxError) +
+			_, err := session.ChannelMessageSend(message.ChannelID, cmdRegister.GetString(cfg.MsgSyntaxError)+
 				cmdRegister.syntax())
 			if err != nil {
 				return err
@@ -43,14 +44,14 @@ func (cmdRegister cmdRegister) handler(session *discordgo.Session, message *disc
 		} else {
 			// check they've mentioned someone correctly
 			if len(message.Mentions) != 1 {
-				_, err := session.ChannelMessageSend(message.ChannelID, cmdRegister.GetString(cfg.MsgSyntaxError) +
+				_, err := session.ChannelMessageSend(message.ChannelID, cmdRegister.GetString(cfg.MsgSyntaxError)+
 					cmdRegister.syntax())
 				if err != nil {
 					return err
 				}
 			} else {
 				user, day, hour, name := message.Mentions[0].ID, args[2], args[3], args[4]
-				_, err := time.Parse(db.TimeFormat, day + " " + hour)
+				_, err := time.Parse(db.TimeFormat, day+" "+hour)
 
 				logrus.WithField("day", day).WithField("hour", hour).WithField("name", name).
 					WithField("host", user).Debug("Registering show...")
@@ -84,6 +85,8 @@ func (cmdRegister cmdRegister) handler(session *discordgo.Session, message *disc
 						fmt.Sprintf(cmdRegister.GetString(cfg.MsgCmdRegisterNewShow), user, name, day, hour))
 				}
 
+				go jobs.UpdateShowsEmbed()
+
 				if err != nil {
 					return err
 				}
@@ -93,4 +96,3 @@ func (cmdRegister cmdRegister) handler(session *discordgo.Session, message *disc
 
 	return nil
 }
-
