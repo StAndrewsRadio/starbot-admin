@@ -17,6 +17,7 @@
 config.toml
 *.db
 starbot-admin
+*.txt
 
 # ide stuff
 .idea
