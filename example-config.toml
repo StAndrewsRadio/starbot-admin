@@ -21,6 +21,7 @@ password = "some important password"
 file = "database.db"
 
 [roles]
+verified  = "ROLE ID HERE"
 moderator = "ROLE ID HERE"
 onAir     = "ROLE ID HERE"
 
@@ -33,12 +34,25 @@ announce     = "As there's nobody in the studio at the moment, I'm going to star
 commands     = [ "LIST", " COMMANDS", "HERE" ]
 ignoredUsers = [ "FORWARDER BOT HERE", "MUSIC BOT HERE" ]
 
+[verification]
+userUnverified     = "The email address has been freed and the user who was registered with that email has been unverified."
+emailNotFound      = "I couldn't find a user with that email address."
+invalidEmail       = "Sorry, that email isn't a valid show host's email address."
+takenEmail         = "Sorry, that email has already been taken by %s."
+emailSent          = "You have been sent an email containing a verification code. Please enter `%sconfirm` followed by the code within 15 minutes."
+emailSubject       = "Starbot Verification Code"
+emailContentsFile  = "someotherfile.html"
+allowedEmailsFile  = "somefile.txt"
+confirmationFailed = "Sorry, I couldn't match that confirmation code to any stored for your account."
+confirmed          = "Your email address has been confirmed and you are now verified."
+
 [msg]
 syntaxError           = "Incorrect syntax: "
 invalidTime           = "The time provided was incorrect. Please use a format like Monday 3PM."
 inviteInvited         = "<@%s> has been invited to the studio."
 registerNewShow       = "<@%s> has been registered as the key show host for *%s* on %s at %s."
 registerReplaced      = "<@%s> has been registered as the key show host for *%s* on %s at %s, replacing <@%s> who hosted *%s*."
+registerWrongRole     = "Sorry, that user doesn't have the correct role to host a show."
 showNoShowFound       = "There is no show registered at that time."
 showShowFound         = "The show on %s at %s is called *%s* and the key show host is <@%s>."
 showsembedSet         = "The shows embed has been created in <#%s>."

@@ -17,6 +17,11 @@ const (
 
 	ShowsEmbedChannel = "embed:shows:channel"
 	ShowsEmbedMessage = "embed:shows:message"
+
+	EmailToUser = "emails:%s:user"
+
+	VerificationCodeToUser  = "verification:%s:user"
+	VerificationCodeToEmail = "verification:%s:email"
 )
 
 func Open(path string) (*Database, error) {

@@ -56,7 +56,10 @@ func main() {
 	}
 
 	// get the emailer
-	emailer = utils.NewEmailer(config)
+	emailer, err = utils.NewEmailer(config)
+	if err != nil {
+		logrus.WithError(err).Fatal("There was an error whilst creating the emailer!")
+	}
 
 	// open the database
 	database, err = db.Open(config.GetString(cfg.DbFile))
@@ -78,7 +81,7 @@ func main() {
 	}
 
 	// get the command manager
-	commander = cmd.New(config, database)
+	commander = cmd.New(config, database, emailer)
 
 	// register handlers
 	session.AddHandler(commander.CommandForwarder)

@@ -22,6 +22,7 @@ type Command interface {
 type CommandManager struct {
 	*cfg.Config
 	*db.Database
+	*utils.Emailer
 
 	Prefix       string
 	PrefixLength int
@@ -29,18 +30,20 @@ type CommandManager struct {
 }
 
 // Makes a new command manager, filling in all available commands.
-func New(config *cfg.Config, database *db.Database) *CommandManager {
+func New(config *cfg.Config, database *db.Database, emailer *utils.Emailer) *CommandManager {
 	commandMap := make(map[string]Command)
 
 	// construct the manager and return
 	mgr := &CommandManager{
 		Config:   config,
 		Database: database,
+		Emailer:  emailer,
 		Prefix:   config.GetString(cfg.BotPrefix),
 		Commands: commandMap,
 	}
 
 	// fill in commands
+	commandMap["confirm"] = cmdConfirm{mgr}
 	commandMap["embedshows"] = cmdEmbedShows{mgr}
 	commandMap["help"] = cmdHelp{mgr}
 	commandMap["invite"] = cmdInvite{mgr}
@@ -48,6 +51,8 @@ func New(config *cfg.Config, database *db.Database) *CommandManager {
 	commandMap["show"] = cmdShow{mgr}
 	commandMap["uninvite"] = cmdUninvite{mgr}
 	commandMap["unregister"] = cmdUnregister{mgr}
+	commandMap["unverify"] = cmdUnverify{mgr}
+	commandMap["verify"] = cmdVerify{mgr}
 
 	logrus.WithField("cmds", len(commandMap)).Debug("New command manager created!")
 

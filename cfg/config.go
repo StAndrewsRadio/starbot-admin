@@ -41,6 +41,6 @@ func (config *Config) GetBool(key string) bool {
 }
 
 // Gets an int from the config, given a key.
-func (config *Config) GetInt(key string) int {
-	return config.tree.Get(key).(int)
+func (config *Config) GetInt(key string) int64 {
+	return config.tree.Get(key).(int64)
 }

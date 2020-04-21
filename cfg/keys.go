@@ -18,6 +18,7 @@ const (
 
 	DbFile = "database.file"
 
+	RoleVerified  = "roles.verified"
 	RoleModerator = "roles.moderator"
 	RoleOnAir     = "roles.onAir"
 
@@ -28,9 +29,21 @@ const (
 	AutoplayCommands     = "autoplay.commands"
 	AutoplayIgnoredUsers = "autoplay.ignoredUsers"
 
+	VerificationUserUnverified = "verification.userUnverified"
+	VerificationEmailNotFound  = "verification.emailNotFound"
+	VerificationEmailTaken     = "verification.takenEmail"
+	VerificationEmailSent      = "verification.emailSent"
+	VerificationInvalidEmail   = "verification.invalidEmail"
+	VerificationEmailSubject   = "verification.emailSubject"
+	VerificationEmailContents  = "verification.emailContentsFile"
+	VerificationNotConfirmed   = "verification.confirmationFailed"
+	VerificationAllowedEmails  = "verification.allowedEmailsFile"
+	VerificationConfirmed      = "verification.confirmed"
+
 	MsgSyntaxError           = "msg.syntaxError"
 	MsgInvalidTime           = "msg.invalidTime"
 	MsgCmdInvite             = "msg.inviteInvited"
+	MsgCmdRegisterWrongRole  = "msg.registerWrongRole"
 	MsgCmdRegisterNewShow    = "msg.registerNewShow"
 	MsgCmdRegisterReplaced   = "msg.registerReplaced"
 	MsgCmdShowNotFound       = "msg.showNoShowFound"

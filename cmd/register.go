@@ -29,23 +29,23 @@ func (cmdRegister) syntax() string {
 	return "<@host> <show day> <show hour (e.g. 3AM)> <show name>"
 }
 
-func (cmdRegister cmdRegister) handler(session *discordgo.Session, message *discordgo.MessageCreate) error {
+func (cmd cmdRegister) handler(session *discordgo.Session, message *discordgo.MessageCreate) error {
 	// perm check
-	if utils.IsSenderInRole(session, message, cmdRegister.GetString(cfg.RoleModerator)) {
+	if utils.IsSenderInRole(session, message, cmd.GetString(cfg.RoleModerator)) {
 		args := strings.SplitN(message.Content, " ", 5)
 
 		// syntax check
 		if len(args) != 5 {
-			_, err := session.ChannelMessageSend(message.ChannelID, cmdRegister.GetString(cfg.MsgSyntaxError)+
-				cmdRegister.syntax())
+			_, err := session.ChannelMessageSend(message.ChannelID, cmd.GetString(cfg.MsgSyntaxError)+
+				cmd.syntax())
 			if err != nil {
 				return err
 			}
 		} else {
 			// check they've mentioned someone correctly
 			if len(message.Mentions) != 1 {
-				_, err := session.ChannelMessageSend(message.ChannelID, cmdRegister.GetString(cfg.MsgSyntaxError)+
-					cmdRegister.syntax())
+				_, err := session.ChannelMessageSend(message.ChannelID, cmd.GetString(cfg.MsgSyntaxError)+
+					cmd.syntax())
 				if err != nil {
 					return err
 				}
@@ -53,12 +53,18 @@ func (cmdRegister cmdRegister) handler(session *discordgo.Session, message *disc
 				user, day, hour, name := message.Mentions[0].ID, args[2], args[3], args[4]
 				_, err := time.Parse(db.TimeFormat, day+" "+hour)
 
+				// check they are verified
+				if !utils.IsUserInRole(session, message.GuildID, user, cmd.GetString(cfg.RoleVerified)) {
+					_, err := session.ChannelMessageSend(message.ChannelID, cmd.GetString(cfg.MsgCmdRegisterWrongRole))
+					return err
+				}
+
 				logrus.WithField("day", day).WithField("hour", hour).WithField("name", name).
 					WithField("host", user).Debug("Registering show...")
 
 				// check they have put a correct time syntax
 				if err != nil {
-					_, secondErr := session.ChannelMessageSend(message.ChannelID, cmdRegister.GetString(cfg.MsgInvalidTime))
+					_, secondErr := session.ChannelMessageSend(message.ChannelID, cmd.GetString(cfg.MsgInvalidTime))
 					if secondErr != nil {
 						return secondErr
 					}
@@ -66,7 +72,7 @@ func (cmdRegister cmdRegister) handler(session *discordgo.Session, message *disc
 					return nil
 				}
 
-				oldShow, replaced, err := cmdRegister.PutShow(db.Show{
+				oldShow, replaced, err := cmd.PutShow(db.Show{
 					KeyHost: user,
 					Day:     day,
 					Hour:    hour,
@@ -78,11 +84,11 @@ func (cmdRegister cmdRegister) handler(session *discordgo.Session, message *disc
 
 				if replaced {
 					_, err = session.ChannelMessageSend(message.ChannelID,
-						fmt.Sprintf(cmdRegister.GetString(cfg.MsgCmdRegisterReplaced), user, name, day, hour,
+						fmt.Sprintf(cmd.GetString(cfg.MsgCmdRegisterReplaced), user, name, day, hour,
 							oldShow.KeyHost, oldShow.Name))
 				} else {
 					_, err = session.ChannelMessageSend(message.ChannelID,
-						fmt.Sprintf(cmdRegister.GetString(cfg.MsgCmdRegisterNewShow), user, name, day, hour))
+						fmt.Sprintf(cmd.GetString(cfg.MsgCmdRegisterNewShow), user, name, day, hour))
 				}
 
 				go jobs.UpdateShowsEmbed()
