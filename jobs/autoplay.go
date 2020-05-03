@@ -5,12 +5,14 @@ import (
 
 	"github.com/StAndrewsRadio/starbot-admin/cfg"
 	"github.com/StAndrewsRadio/starbot-admin/utils"
+	"github.com/bwmarrin/discordgo"
 	"github.com/jasonlvhit/gocron"
 	"github.com/sirupsen/logrus"
 )
 
 var (
 	autoplayLogger = logrus.WithField("event", "autoplayJob")
+	join           *discordgo.VoiceConnection
 )
 
 // Schedules the autoplay job.
@@ -68,10 +70,12 @@ func autoplayJob() {
 		controlRoomID := config.GetString(cfg.ChannelControlRoom)
 
 		// join the studio
-		join, err := userSession.ChannelVoiceJoin(guild.ID, studioID, true, false)
-		if err != nil {
-			autoplayLogger.WithError(err).Error("An error occurred whilst joining the studio!")
-			return
+		if join == nil {
+			join, err = userSession.ChannelVoiceJoin(guild.ID, studioID, true, false)
+			if err != nil {
+				autoplayLogger.WithError(err).Error("An error occurred whilst joining the studio!")
+				return
+			}
 		}
 
 		// wait a mo
@@ -94,14 +98,6 @@ func autoplayJob() {
 				autoplayLogger.WithField("cmd", command).WithError(err).
 					Error("An error occurred whilst sending a command.")
 			}
-		}
-
-		// finally, leave the studio
-		autoplayLogger.Debug("Leaving the studio...")
-		join.Close()
-		err = join.Disconnect()
-		if err != nil {
-			autoplayLogger.WithError(err).Error("An error occurred whilst leaving the studio.")
 		}
 	}
 }
