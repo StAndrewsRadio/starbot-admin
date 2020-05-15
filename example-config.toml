@@ -20,16 +20,23 @@ password = "some important password"
 [database]
 file = "database.db"
 
+[triggers]
+address  = ":7827"
+password = "RANDOM STRING HERE"
+
 [roles]
 verified  = "ROLE ID HERE"
 moderator = "ROLE ID HERE"
 onAir     = "ROLE ID HERE"
+support   = "ROLE ID HERE"
 
 [channels]
 studio      = "CHANNEL ID HERE"
 controlRoom = "CHANNEL ID HERE"
 
 [autoplay]
+afterShows   = true
+onTrigger    = true
 announce     = "As there's nobody in the studio at the moment, I'm going to start autoplay."
 commands     = [ "LIST", " COMMANDS", "HERE" ]
 ignoredUsers = [ "FORWARDER BOT HERE", "MUSIC BOT HERE" ]

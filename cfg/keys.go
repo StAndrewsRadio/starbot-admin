@@ -18,13 +18,19 @@ const (
 
 	DbFile = "database.file"
 
+	TriggersAddress  = "triggers.address"
+	TriggersPassword = "triggers.password"
+
 	RoleVerified  = "roles.verified"
 	RoleModerator = "roles.moderator"
 	RoleOnAir     = "roles.onAir"
+	RoleSupport   = "roles.support"
 
 	ChannelStudio      = "channels.studio"
 	ChannelControlRoom = "channels.controlRoom"
 
+	AutoplayAfterShows   = "autoplay.afterShows"
+	AutoplayOnTrigger    = "autoplay.onTrigger"
 	AutoplayAnnounce     = "autoplay.announce"
 	AutoplayCommands     = "autoplay.commands"
 	AutoplayIgnoredUsers = "autoplay.ignoredUsers"

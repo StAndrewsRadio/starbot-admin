@@ -43,6 +43,7 @@ func New(config *cfg.Config, database *db.Database, emailer *utils.Emailer) *Com
 	}
 
 	// fill in commands
+	commandMap["autoplay"] = cmdAutoplay{mgr}
 	commandMap["confirm"] = cmdConfirm{mgr}
 	commandMap["embedshows"] = cmdEmbedShows{mgr}
 	commandMap["help"] = cmdHelp{mgr}

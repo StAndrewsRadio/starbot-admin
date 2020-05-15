@@ -11,6 +11,7 @@ import (
 	"github.com/StAndrewsRadio/starbot-admin/cmd"
 	"github.com/StAndrewsRadio/starbot-admin/db"
 	"github.com/StAndrewsRadio/starbot-admin/jobs"
+	"github.com/StAndrewsRadio/starbot-admin/triggers"
 	"github.com/StAndrewsRadio/starbot-admin/utils"
 	"github.com/bwmarrin/discordgo"
 	"github.com/sirupsen/logrus"
@@ -40,7 +41,7 @@ func main() {
 	}
 
 	// check standard syntax
-	if len(args) != 2 {
+	if len(args) < 2 {
 		logrus.Fatal("Please provide the configuration file to use")
 	}
 
@@ -50,7 +51,7 @@ func main() {
 		logrus.WithError(err).Fatal("There was an error whilst reading the configuration file!")
 	}
 
-	if config.GetBool(cfg.GeneralDebug) {
+	if config.GetBool(cfg.GeneralDebug) || utils.StringSliceContains(os.Args[1:], "--debug") {
 		logrus.Info("Enabling debug logging...")
 		logrus.SetLevel(logrus.DebugLevel)
 	}
@@ -99,12 +100,16 @@ func main() {
 	}
 
 	go jobs.ScheduleEvents(config, database, session, userSession)
+	go triggers.SetupTriggers(config.GetString(cfg.TriggersAddress), config.GetString(cfg.TriggersPassword),
+		session, userSession, config)
 
 	// wait to be killed or terminated before cleanly closing everything
 	logrus.Info("The bot is now running. Press CTRL-C to exit.")
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-sc
+
+	triggers.Close()
 
 	err = database.Close()
 	if err != nil {

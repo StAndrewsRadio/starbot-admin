@@ -13,6 +13,7 @@ import (
 var (
 	autoplayLogger = logrus.WithField("event", "autoplayJob")
 	join           *discordgo.VoiceConnection
+	running        = false
 )
 
 // Schedules the autoplay job.
@@ -33,7 +34,7 @@ func autoplayScheduler(quicker bool) {
 
 	// schedule the job
 	startTime := job.NextScheduledTime()
-	err := job.Do(autoplayJob)
+	err := job.Do(StartAutoplay, false)
 	if err != nil {
 		autoplayLogger.WithError(err).Fatal("An error occurred whilst scheduling the autoplayJob job!")
 	}
@@ -42,7 +43,14 @@ func autoplayScheduler(quicker bool) {
 }
 
 // Checks if the studio voice channel is empty and plays some music if it is.
-func autoplayJob() {
+func StartAutoplay(ignoreUsers bool) {
+	if running {
+		autoplayLogger.Warning("Something triggered the job whilst it was already running!")
+		return
+	}
+
+	running = true
+
 	// log event
 	autoplayLogger.WithField("time", time.Now()).Debug("Running event...")
 
@@ -50,30 +58,33 @@ func autoplayJob() {
 	guild, err := session.Guild(config.GetString(cfg.GeneralGuild))
 	if err != nil {
 		autoplayLogger.WithError(err).Error("An error occurred whilst getting the guild!")
+		running = false
 		return
 	}
 
 	numInStudio := 0
 	studioID, forwarderID := config.GetString(cfg.ChannelStudio), config.GetStrings(cfg.AutoplayIgnoredUsers)
 
-	// iterate through every voice state
-	for _, voiceState := range guild.VoiceStates {
-		// if the state represents a user in the studio that isn't a forwarder, increment the number
-		if voiceState.ChannelID == studioID && !utils.StringSliceContains(forwarderID, voiceState.UserID) &&
-			voiceState.UserID != userSession.State.User.ID {
-			numInStudio++
+	// iterate through every voice state only if we care about the users
+	if !ignoreUsers {
+		for _, voiceState := range guild.VoiceStates {
+			// if the state represents a user in the studio that isn't a forwarder, increment the number
+			if voiceState.ChannelID == studioID && !utils.StringSliceContains(forwarderID, voiceState.UserID) &&
+				voiceState.UserID != userSession.State.User.ID {
+				numInStudio++
+			}
 		}
 	}
 
 	// if nobody is in the studio, it's autoplayJob time!
+	controlRoomID := config.GetString(cfg.ChannelControlRoom)
 	if numInStudio == 0 {
-		controlRoomID := config.GetString(cfg.ChannelControlRoom)
-
 		// join the studio
 		if join == nil {
 			join, err = userSession.ChannelVoiceJoin(guild.ID, studioID, true, false)
 			if err != nil {
 				autoplayLogger.WithError(err).Error("An error occurred whilst joining the studio!")
+				running = false
 				return
 			}
 		}
@@ -99,5 +110,16 @@ func autoplayJob() {
 					Error("An error occurred whilst sending a command.")
 			}
 		}
+	} else {
+		// there's people in the studio but someone requested auto play?
+		_, err := session.ChannelMessageSend(controlRoomID, "Something has requested me to start autoplay "+
+			"but there's people here in the studio. Are you sure you're playing music or talking? Message <@&"+
+			config.GetString(cfg.RoleSupport)+"> if you need a hand.")
+		if err != nil {
+			autoplayLogger.WithError(err).
+				Error("An error occurred whilst sending a message.")
+		}
 	}
+
+	running = false
 }
