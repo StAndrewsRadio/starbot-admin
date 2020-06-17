@@ -1,4 +1,4 @@
-package cmd
+package discord
 
 import (
 	"github.com/bwmarrin/discordgo"
@@ -36,4 +36,3 @@ func (command cmdHelp) handler(session *discordgo.Session, message *discordgo.Me
 	_, err := session.ChannelMessageSend(message.ChannelID, help)
 	return err
 }
-

@@ -6,29 +6,21 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/StAndrewsRadio/starbot-admin/cfg"
-	"github.com/bwmarrin/discordgo"
 	"github.com/sirupsen/logrus"
 )
 
 var (
 	accessPassword string
 	server         *http.Server
-	config         *cfg.Config
-	botSession     *discordgo.Session
-	userSession    *discordgo.Session
 )
 
 type Handler struct {
 }
 
 // Sets the triggers http server up
-func SetupTriggers(address, password string, bot, user *discordgo.Session, cfg *cfg.Config) {
+func SetupTriggers(address, password string) {
 	// store stuff
 	accessPassword = password
-	botSession = bot
-	userSession = user
-	config = cfg
 
 	server = &http.Server{Addr: address, Handler: Handler{}}
 	if err := server.ListenAndServe(); err != nil {

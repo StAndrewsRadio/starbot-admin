@@ -1,4 +1,4 @@
-package cmd
+package discord
 
 import (
 	"github.com/StAndrewsRadio/starbot-admin/cfg"

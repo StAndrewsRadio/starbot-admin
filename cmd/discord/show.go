@@ -1,4 +1,4 @@
-package cmd
+package discord
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 	"github.com/tidwall/buntdb"
 )
 
-type cmdShow struct{
+type cmdShow struct {
 	*CommandManager
 }
 
@@ -32,13 +32,13 @@ func (cmdShow cmdShow) handler(session *discordgo.Session, message *discordgo.Me
 
 	// syntax check
 	if len(args) != 3 {
-		_, err := session.ChannelMessageSend(message.ChannelID, cmdShow.GetString(cfg.MsgSyntaxError) +
+		_, err := session.ChannelMessageSend(message.ChannelID, cmdShow.GetString(cfg.MsgSyntaxError)+
 			cmdShow.syntax())
 		if err != nil {
 			return err
 		}
 	} else {
-		_, err := time.Parse(db.TimeFormat, args[1] + " " + args[2])
+		_, err := time.Parse(db.TimeFormat, args[1]+" "+args[2])
 
 		// check time validity
 		if err != nil {
@@ -71,4 +71,3 @@ func (cmdShow cmdShow) handler(session *discordgo.Session, message *discordgo.Me
 
 	return nil
 }
-
