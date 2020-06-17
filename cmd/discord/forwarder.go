@@ -50,6 +50,7 @@ func New(config *cfg.Config, database *db.Database, emailer *utils.Emailer, us *
 	commandMap["embedshows"] = cmdEmbedShows{mgr}
 	commandMap["help"] = cmdHelp{mgr}
 	commandMap["invite"] = cmdInvite{mgr}
+	commandMap["listeners"] = cmdListeners{mgr}
 	commandMap["register"] = cmdRegister{mgr}
 	commandMap["show"] = cmdShow{mgr}
 	commandMap["uninvite"] = cmdUninvite{mgr}

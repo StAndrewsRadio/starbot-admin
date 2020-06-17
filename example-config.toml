@@ -65,3 +65,6 @@ showsembedReplaced    = "The shows embed has been moved to <#%s>. The old embed 
 uninviteUninvited     = "<@%s> has been booted out of the studio."
 unregisterNoShowFound = "There is no show registered at that time."
 unregisterShowDeleted = "The show on %s at %s has been unregistered."
+
+[misc]
+listenersUrl = "http://example.com/current_listeners.php"
