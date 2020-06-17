@@ -14,6 +14,13 @@ var GlobalOptions struct {
 }
 
 func init() {
+	for _, arg := range os.Args {
+		if arg == "-d" || arg == "--debug" {
+			logrus.SetLevel(logrus.DebugLevel)
+			logrus.Debug("Debug logging enabled!")
+		}
+	}
+
 	logrus.Debug("Loading parser...")
 	vars.Parser = flags.NewParser(&GlobalOptions, flags.Default)
 
@@ -22,12 +29,6 @@ func init() {
 
 func main() {
 	if _, err := vars.Parser.Parse(); err != nil {
-		// check debug first
-		if GlobalOptions.Debug {
-			logrus.SetLevel(logrus.DebugLevel)
-			logrus.Debug("Debug logging enabled!")
-		}
-
 		if flagsErr, ok := err.(*flags.Error); ok && flagsErr.Type == flags.ErrHelp {
 			os.Exit(0)
 		} else {
