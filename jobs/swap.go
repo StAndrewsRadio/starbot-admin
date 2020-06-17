@@ -1,6 +1,7 @@
 package jobs
 
 import (
+	"sync"
 	"time"
 
 	"github.com/StAndrewsRadio/starbot-admin/cfg"
@@ -14,14 +15,17 @@ var (
 	onAirRole    string
 	newKeyHost   string
 	handlerAdded bool
+	wg           sync.WaitGroup
 
 	swapLogger = logrus.WithField("event", "swapShows")
 )
 
-// Kicks out the current show hosts and moves the new key show host in.
-func swapJob(database *db.Database, session *discordgo.Session, config *cfg.Config) {
+// Kicks out the current show hosts and moves the new key show host in, returns true if there is another show next.
+func SwapJob(database *db.Database, session *discordgo.Session, config *cfg.Config) (error, bool) {
 	// check the swap handler has been added
 	if !handlerAdded {
+		logrus.Debug("Registering swap job handlers for chunk received...")
+
 		onAirRole = config.GetString(cfg.RoleOnAir)
 		session.AddHandler(swapMemberChunkReceived)
 		handlerAdded = true
@@ -33,7 +37,7 @@ func swapJob(database *db.Database, session *discordgo.Session, config *cfg.Conf
 	newShow, err := database.GetShow(currentTime.Format(db.DayFormat), currentTime.Format(db.HourFormat))
 	if err != nil && err != buntdb.ErrNotFound {
 		swapLogger.WithError(err).Error("An error occurred whilst retrieving the next show from the database.")
-		return
+		return err, false
 	}
 
 	swapLogger.WithField("show", newShow).WithField("time", time.Now()).Debug("Running event...")
@@ -46,17 +50,27 @@ func swapJob(database *db.Database, session *discordgo.Session, config *cfg.Conf
 		newKeyHost = newShow.KeyHost
 	}
 
+	// wait for the chunks to all come through
+	wg.Add(1)
+
 	// request the members chunk for our guild
 	err = session.RequestGuildMembers(config.GetString(cfg.GeneralGuild), "", 0)
 	if err != nil {
 		swapLogger.WithError(err).Error("An error occurred whilst requesting a list of guild members.")
-		return
+		return err, false
 	}
+
+	logrus.Debug("Waiting for chunk responses...")
+	wg.Wait()
+	return nil, newKeyHost != ""
 }
 
 // Iterates through all members, removing the role from those that do not match the new key host and adding the role
 // to those who do.
 func swapMemberChunkReceived(session *discordgo.Session, chunk *discordgo.GuildMembersChunk) {
+	logrus.WithField("chcnt", chunk.ChunkCount).WithField("chind", chunk.ChunkIndex).
+		Debug("Guild members chunk received!")
+
 	for _, member := range chunk.Members {
 		if member.User.ID == newKeyHost {
 			// add the on air role
@@ -71,5 +85,11 @@ func swapMemberChunkReceived(session *discordgo.Session, chunk *discordgo.GuildM
 				swapLogger.WithError(err).Error("An error occurred whilst removing the on air role from a user.")
 			}
 		}
+	}
+
+	// check chunk index
+	if chunk.ChunkIndex+1 >= chunk.ChunkCount {
+		logrus.Debug("Final chunk received!")
+		wg.Done()
 	}
 }

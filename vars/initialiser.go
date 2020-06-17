@@ -57,6 +57,7 @@ func InitialiseStarbot(opts ...StarbotOption) (*Starbot, error) {
 
 	// try and open the sessions if they aren't nil
 	if starbot.UserSession != nil {
+		starbot.UserSession.Identify.Intents = nil
 		err := starbot.UserSession.Open()
 		if err != nil {
 			return nil, err
@@ -64,6 +65,7 @@ func InitialiseStarbot(opts ...StarbotOption) (*Starbot, error) {
 	}
 
 	if starbot.BotSession != nil {
+		starbot.BotSession.Identify.Intents = nil
 		err := starbot.BotSession.Open()
 		if err != nil {
 			return nil, err
