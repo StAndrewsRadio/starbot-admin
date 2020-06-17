@@ -13,7 +13,7 @@ func autoplay(writer http.ResponseWriter, request *http.Request) {
 
 	_, err := fmt.Fprint(writer, "Autoplay job scheduled!")
 
-	go jobs.StartAutoplay(false)
+	go jobs.StartAutoplay(botSession, userSession, config, false)
 
 	if err != nil {
 		logger.WithError(err).Error("An error occurred.")

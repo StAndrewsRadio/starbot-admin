@@ -29,8 +29,6 @@ const (
 	ChannelStudio      = "channels.studio"
 	ChannelControlRoom = "channels.controlRoom"
 
-	AutoplayAfterShows   = "autoplay.afterShows"
-	AutoplayOnTrigger    = "autoplay.onTrigger"
 	AutoplayAnnounce     = "autoplay.announce"
 	AutoplayCommands     = "autoplay.commands"
 	AutoplayIgnoredUsers = "autoplay.ignoredUsers"
@@ -59,6 +57,4 @@ const (
 	MsgCmdUninvite           = "msg.uninviteUninvited"
 	MsgCmdUnregisterNotFound = "msg.unregisterNoShowFound"
 	MsgCmdUnregisterDeleted  = "msg.unregisterShowDeleted"
-
-	TestingQuickerJobs = "testing.quickerJobs"
 )

@@ -10,7 +10,6 @@ import (
 	"github.com/StAndrewsRadio/starbot-admin/cfg"
 	"github.com/StAndrewsRadio/starbot-admin/cmd/discord"
 	"github.com/StAndrewsRadio/starbot-admin/db"
-	"github.com/StAndrewsRadio/starbot-admin/jobs"
 	"github.com/StAndrewsRadio/starbot-admin/triggers"
 	"github.com/StAndrewsRadio/starbot-admin/utils"
 	"github.com/bwmarrin/discordgo"
@@ -71,15 +70,9 @@ func InitialiseStarbot(opts ...StarbotOption) (*Starbot, error) {
 		}
 	}
 
-	// initialise the jobs system
-	if starbot.withJobs {
-		go jobs.ScheduleEvents(starbot.Config, starbot.Database, starbot.BotSession, starbot.UserSession)
-	}
-
 	// initialise the trigger system
 	if starbot.withTriggers {
-		go triggers.SetupTriggers(starbot.Config.GetString(cfg.TriggersAddress),
-			starbot.Config.GetString(cfg.TriggersPassword))
+		go triggers.SetupTriggers(starbot.BotSession, starbot.UserSession, starbot.Config)
 	}
 
 	// clean exit
@@ -129,13 +122,15 @@ func checkDependencies(starbot *Starbot) error {
 	}
 
 	if starbot.withCommander {
-		if starbot.Config == nil || starbot.Database == nil || starbot.Emailer == nil || starbot.BotSession == nil {
+		if starbot.Config == nil || starbot.Database == nil || starbot.Emailer == nil || starbot.BotSession == nil ||
+			starbot.UserSession == nil {
+
 			logrus.WithField("cfg", starbot.Config == nil).WithField("db", starbot.Database == nil).
 				WithField("em", starbot.Emailer == nil).WithField("bs", starbot.BotSession == nil).
-				Info("Dependency information.")
+				WithField("us", starbot.UserSession == nil).Info("Dependency information.")
 			return errors.New("commander depends on config, database, emailer and bot session being loaded")
 		} else {
-			starbot.Commander = discord.New(starbot.Config, starbot.Database, starbot.Emailer)
+			starbot.Commander = discord.New(starbot.Config, starbot.Database, starbot.Emailer, starbot.UserSession)
 			starbot.BotSession.AddHandler(starbot.Commander.CommandForwarder)
 		}
 	}

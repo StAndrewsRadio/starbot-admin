@@ -6,7 +6,6 @@ import (
 	"github.com/StAndrewsRadio/starbot-admin/cfg"
 	"github.com/StAndrewsRadio/starbot-admin/utils"
 	"github.com/bwmarrin/discordgo"
-	"github.com/jasonlvhit/gocron"
 	"github.com/sirupsen/logrus"
 )
 
@@ -16,34 +15,8 @@ var (
 	running        = false
 )
 
-// Schedules the autoplay job.
-func autoplayScheduler(quicker bool) {
-	// get time to next run
-	autoplayTime := time.Now().Truncate(time.Hour).Add(2 * time.Minute).Add(30 * time.Second)
-	if autoplayTime.Before(time.Now()) {
-		autoplayTime = autoplayTime.Add(time.Hour)
-	}
-
-	// set the time to do the job
-	var job *gocron.Job
-	if quicker {
-		job = gocron.Every(1).Minute().From(gocron.NextTick())
-	} else {
-		job = gocron.Every(1).Hour().From(&autoplayTime)
-	}
-
-	// schedule the job
-	startTime := job.NextScheduledTime()
-	err := job.Do(StartAutoplay, false)
-	if err != nil {
-		autoplayLogger.WithError(err).Fatal("An error occurred whilst scheduling the autoplayJob job!")
-	}
-
-	autoplayLogger.WithField("start", startTime).Debug("Job scheduled successfully.")
-}
-
 // Checks if the studio voice channel is empty and plays some music if it is.
-func StartAutoplay(ignoreUsers bool) {
+func StartAutoplay(session, userSession *discordgo.Session, config *cfg.Config, ignoreUsers bool) {
 	if running {
 		autoplayLogger.Warning("Something triggered the job whilst it was already running!")
 		return

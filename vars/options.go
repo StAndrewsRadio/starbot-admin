@@ -89,9 +89,3 @@ func AwaitUserExit() StarbotOption {
 		starbot.awaitUserExit = true
 	}
 }
-
-func WithJobs() StarbotOption {
-	return func(starbot *Starbot) {
-		starbot.withJobs = true
-	}
-}

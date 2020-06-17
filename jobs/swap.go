@@ -6,50 +6,27 @@ import (
 	"github.com/StAndrewsRadio/starbot-admin/cfg"
 	"github.com/StAndrewsRadio/starbot-admin/db"
 	"github.com/bwmarrin/discordgo"
-	"github.com/jasonlvhit/gocron"
 	"github.com/sirupsen/logrus"
 	"github.com/tidwall/buntdb"
 )
 
 var (
-	onAirRole  string
-	newKeyHost string
+	onAirRole    string
+	newKeyHost   string
+	handlerAdded bool
 
 	swapLogger = logrus.WithField("event", "swapShows")
 )
 
-// Schedules the swap shows job.
-func swapScheduler(quicker bool) {
-	// get time to next run
-	swapperTime := time.Now().Truncate(time.Hour)
-	if swapperTime.Before(time.Now()) {
-		swapperTime = swapperTime.Add(time.Hour)
-	}
-
-	// set the time to do the job
-	var job *gocron.Job
-	if quicker {
-		job = gocron.Every(1).Minute().From(gocron.NextTick())
-	} else {
-		job = gocron.Every(1).Hour().From(&swapperTime)
-	}
-
-	// schedule the job
-	startTime := job.NextScheduledTime()
-	err := job.Do(swapJob)
-	if err != nil {
-		autoplayLogger.WithError(err).Fatal("An error occurred whilst scheduling the autoplayJob job!")
-	}
-
-	swapLogger.WithField("start", startTime).Debug("Job scheduled successfully.")
-
-	// add the member chunk event handler
-	onAirRole = config.GetString(cfg.RoleOnAir)
-	session.AddHandler(swapMemberChunkReceived)
-}
-
 // Kicks out the current show hosts and moves the new key show host in.
-func swapJob() {
+func swapJob(database *db.Database, session *discordgo.Session, config *cfg.Config) {
+	// check the swap handler has been added
+	if !handlerAdded {
+		onAirRole = config.GetString(cfg.RoleOnAir)
+		session.AddHandler(swapMemberChunkReceived)
+		handlerAdded = true
+	}
+
 	// add ten minutes to the current time just in case we're straddling slightly behind an hour
 	currentTime := time.Now().Add(10 * time.Minute)
 

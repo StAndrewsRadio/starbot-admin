@@ -91,7 +91,7 @@ func (cmd cmdRegister) handler(session *discordgo.Session, message *discordgo.Me
 						fmt.Sprintf(cmd.GetString(cfg.MsgCmdRegisterNewShow), user, name, day, hour))
 				}
 
-				go jobs.UpdateShowsEmbed()
+				go jobs.UpdateShowsEmbed(session, cmd.Database, cmd.Config)
 
 				if err != nil {
 					return err

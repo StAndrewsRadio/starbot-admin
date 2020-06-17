@@ -6,23 +6,30 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/StAndrewsRadio/starbot-admin/cfg"
+	"github.com/bwmarrin/discordgo"
 	"github.com/sirupsen/logrus"
 )
 
 var (
-	accessPassword string
-	server         *http.Server
+	accessPassword          string
+	server                  *http.Server
+	botSession, userSession *discordgo.Session
+	config                  *cfg.Config
 )
 
 type Handler struct {
 }
 
 // Sets the triggers http server up
-func SetupTriggers(address, password string) {
+func SetupTriggers(bs, us *discordgo.Session, c *cfg.Config) {
 	// store stuff
-	accessPassword = password
+	botSession = bs
+	userSession = us
+	config = c
+	accessPassword = config.GetString(cfg.TriggersPassword)
 
-	server = &http.Server{Addr: address, Handler: Handler{}}
+	server = &http.Server{Addr: config.GetString(cfg.TriggersAddress), Handler: Handler{}}
 	if err := server.ListenAndServe(); err != nil {
 		if err != http.ErrServerClosed {
 			// we only care about the error if it's not the closing

@@ -35,8 +35,6 @@ studio      = "CHANNEL ID HERE"
 controlRoom = "CHANNEL ID HERE"
 
 [autoplay]
-afterShows   = true
-onTrigger    = true
 announce     = "As there's nobody in the studio at the moment, I'm going to start autoplay."
 commands     = [ "LIST", " COMMANDS", "HERE" ]
 ignoredUsers = [ "FORWARDER BOT HERE", "MUSIC BOT HERE" ]
@@ -67,6 +65,3 @@ showsembedReplaced    = "The shows embed has been moved to <#%s>. The old embed 
 uninviteUninvited     = "<@%s> has been booted out of the studio."
 unregisterNoShowFound = "There is no show registered at that time."
 unregisterShowDeleted = "The show on %s at %s has been unregistered."
-
-[testing]
-quickerJobs = false

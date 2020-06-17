@@ -24,22 +24,24 @@ type CommandManager struct {
 	*db.Database
 	*utils.Emailer
 
+	UserSession  *discordgo.Session
 	Prefix       string
 	PrefixLength int
 	Commands     map[string]Command
 }
 
 // Makes a new command manager, filling in all available commands.
-func New(config *cfg.Config, database *db.Database, emailer *utils.Emailer) *CommandManager {
+func New(config *cfg.Config, database *db.Database, emailer *utils.Emailer, us *discordgo.Session) *CommandManager {
 	commandMap := make(map[string]Command)
 
 	// construct the manager and return
 	mgr := &CommandManager{
-		Config:   config,
-		Database: database,
-		Emailer:  emailer,
-		Prefix:   config.GetString(cfg.BotPrefix),
-		Commands: commandMap,
+		Config:      config,
+		Database:    database,
+		Emailer:     emailer,
+		UserSession: us,
+		Prefix:      config.GetString(cfg.BotPrefix),
+		Commands:    commandMap,
 	}
 
 	// fill in commands

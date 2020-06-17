@@ -35,7 +35,6 @@ func (cmd *StartBotCommand) Execute(args []string) error {
 		vars.WithCommander(),
 		vars.WithTriggers(),
 		vars.AwaitUserExit(),
-		vars.WithJobs(),
 		vars.WithBotSession(),
 		vars.WithUserSession(),
 	)

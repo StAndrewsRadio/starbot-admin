@@ -27,7 +27,7 @@ func (cmdEmbedShows) syntax() string {
 
 func (cmd cmdEmbedShows) handler(session *discordgo.Session, message *discordgo.MessageCreate) error {
 	if utils.IsSenderInRole(session, message, cmd.Config.GetString(cfg.RoleModerator)) {
-		previousChannel, _, replaced, err := jobs.CreateShowsEmbed(message.ChannelID)
+		previousChannel, _, replaced, err := jobs.CreateShowsEmbed(session, cmd.Database, cmd.Config, message.ChannelID)
 		if err != nil {
 			return err
 		}

@@ -15,7 +15,9 @@ var (
 	hours = [...]string{"12", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"}
 )
 
-func CreateShowsEmbed(channelID string) (string, string, bool, error) {
+func CreateShowsEmbed(session *discordgo.Session, database *db.Database, config *cfg.Config,
+	channelID string) (string, string, bool, error) {
+
 	embed, err := session.ChannelMessageSendEmbed(channelID, &discordgo.MessageEmbed{
 		Title:       "Show Schedule",
 		Description: "Coming soon...",
@@ -30,7 +32,7 @@ func CreateShowsEmbed(channelID string) (string, string, bool, error) {
 
 	// update the embed in a new thread if there was no db error
 	if err == nil {
-		go UpdateShowsEmbed()
+		go UpdateShowsEmbed(session, database, config)
 	} else {
 		logrus.WithError(err).Debug("Some sort of error happened during the creation of the embed")
 	}
@@ -38,7 +40,7 @@ func CreateShowsEmbed(channelID string) (string, string, bool, error) {
 	return previousChannel, previousMessage, replaced, err
 }
 
-func UpdateShowsEmbed() {
+func UpdateShowsEmbed(session *discordgo.Session, database *db.Database, config *cfg.Config) {
 	logrus.Debug("Updating shows embed...")
 
 	// get the message id

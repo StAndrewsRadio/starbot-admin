@@ -69,7 +69,7 @@ func (cmd cmdUnregister) handler(session *discordgo.Session, message *discordgo.
 			} else if err != nil {
 				return err
 			} else {
-				go jobs.UpdateShowsEmbed()
+				go jobs.UpdateShowsEmbed(session, cmd.Database, cmd.Config)
 
 				_, secondErr := session.ChannelMessageSend(message.ChannelID,
 					fmt.Sprintf(cmd.GetString(cfg.MsgCmdUnregisterDeleted), day, hour))
