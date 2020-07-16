@@ -54,7 +54,7 @@ func SwapJob(database *db.Database, session *discordgo.Session, config *cfg.Conf
 	wg.Add(1)
 
 	// request the members chunk for our guild
-	err = session.RequestGuildMembers(config.GetString(cfg.GeneralGuild), "", 0)
+	err = session.RequestGuildMembers(config.GetString(cfg.GeneralGuild), "", 0, false)
 	if err != nil {
 		swapLogger.WithError(err).Error("An error occurred whilst requesting a list of guild members.")
 		return err, false
