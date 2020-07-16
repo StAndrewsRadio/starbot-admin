@@ -57,7 +57,10 @@ func InitialiseStarbot(opts ...StarbotOption) (*Starbot, error) {
 
 	// try and open the sessions if they aren't nil
 	if starbot.UserSession != nil {
+		starbot.UserSession.ShouldReconnectOnError = true
+		starbot.UserSession.StateEnabled = false
 		starbot.UserSession.Identify.Intents = nil
+		logrus.Info("Opening user session...")
 		err := starbot.UserSession.Open()
 		if err != nil {
 			return nil, err
@@ -65,7 +68,10 @@ func InitialiseStarbot(opts ...StarbotOption) (*Starbot, error) {
 	}
 
 	if starbot.BotSession != nil {
+		starbot.BotSession.ShouldReconnectOnError = true
+		starbot.BotSession.StateEnabled = true
 		starbot.BotSession.Identify.Intents = nil
+		logrus.Info("Opening bot session...")
 		err := starbot.BotSession.Open()
 		if err != nil {
 			return nil, err

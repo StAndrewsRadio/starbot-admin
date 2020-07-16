@@ -28,7 +28,7 @@ func StartAutoplay(session, userSession *discordgo.Session, config *cfg.Config, 
 	autoplayLogger.WithField("time", time.Now()).Debug("Running event...")
 
 	// get the guild
-	guild, err := session.Guild(config.GetString(cfg.GeneralGuild))
+	guild, err := session.State.Guild(config.GetString(cfg.GeneralGuild))
 	if err != nil {
 		autoplayLogger.WithError(err).Error("An error occurred whilst getting the guild!")
 		running = false
