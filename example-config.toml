@@ -36,6 +36,7 @@ controlRoom = "CHANNEL ID HERE"
 
 [autoplay]
 announce     = "As there's nobody in the studio at the moment, I'm going to start autoplay."
+slotUp       = "As the hour is over and there's no upcoming show, I'm going to start autoplay."
 commands     = [ "LIST", " COMMANDS", "HERE" ]
 ignoredUsers = [ "FORWARDER BOT HERE", "MUSIC BOT HERE" ]
 

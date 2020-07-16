@@ -16,7 +16,7 @@ var (
 )
 
 // Checks if the studio voice channel is empty and plays some music if it is.
-func StartAutoplay(session, userSession *discordgo.Session, config *cfg.Config, ignoreUsers bool) {
+func StartAutoplay(session, userSession *discordgo.Session, config *cfg.Config, ignoreUsers, isSlotUp bool) {
 	if running {
 		autoplayLogger.Warning("Something triggered the job whilst it was already running!")
 		return
@@ -66,7 +66,14 @@ func StartAutoplay(session, userSession *discordgo.Session, config *cfg.Config, 
 		time.Sleep(3 * time.Second)
 
 		// announce that we're starting autoplayJob
-		_, err = userSession.ChannelMessageSend(controlRoomID, config.GetString(cfg.AutoplayAnnounce))
+		var announcementMessage string
+		if isSlotUp {
+			announcementMessage = config.GetString(cfg.AutoplaySlotUp)
+		} else {
+			announcementMessage = config.GetString(cfg.AutoplayAnnounce)
+		}
+
+		_, err = userSession.ChannelMessageSend(controlRoomID, announcementMessage)
 		if err != nil {
 			autoplayLogger.WithError(err).Error("An error occurred whilst sending the announcement message.")
 		}

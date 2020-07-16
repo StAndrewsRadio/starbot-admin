@@ -32,6 +32,7 @@ const (
 	AutoplayAnnounce     = "autoplay.announce"
 	AutoplayCommands     = "autoplay.commands"
 	AutoplayIgnoredUsers = "autoplay.ignoredUsers"
+	AutoplaySlotUp       = "autoplay.slotUp"
 
 	VerificationUserUnverified = "verification.userUnverified"
 	VerificationEmailNotFound  = "verification.emailNotFound"

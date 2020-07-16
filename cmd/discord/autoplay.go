@@ -33,7 +33,7 @@ func (cmd cmdAutoplay) handler(session *discordgo.Session, message *discordgo.Me
 		}
 
 		// start the autoplay
-		jobs.StartAutoplay(session, cmd.UserSession, cmd.Config, true)
+		jobs.StartAutoplay(session, cmd.UserSession, cmd.Config, true, false)
 	}
 
 	return nil

@@ -48,7 +48,7 @@ func (cmd *SwapShowsCommand) Execute(args []string) error {
 
 	if !upcoming {
 		logrus.Info("As there's no show next we'll start autoplay...")
-		jobs.StartAutoplay(starbot.BotSession, starbot.UserSession, starbot.Config, true)
+		jobs.StartAutoplay(starbot.BotSession, starbot.UserSession, starbot.Config, true, true)
 	}
 
 	logrus.Info("Job executed successfully!")
