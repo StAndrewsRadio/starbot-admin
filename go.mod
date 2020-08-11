@@ -3,7 +3,7 @@ module github.com/StAndrewsRadio/starbot-admin
 go 1.14
 
 require (
-	github.com/bwmarrin/discordgo v0.21.2-0.20200628235124-928baab30ae8
+	github.com/bwmarrin/discordgo v0.22.0
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/jessevdk/go-flags v1.4.0
 	github.com/kr/pretty v0.1.0 // indirect
