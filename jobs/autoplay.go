@@ -37,23 +37,28 @@ func StartAutoplay(session, userSession *discordgo.Session, config *cfg.Config, 
 
 	numInStudio := 0
 	studioID, forwarderID := config.GetString(cfg.ChannelStudio), config.GetStrings(cfg.AutoplayIgnoredUsers)
+	isUserBotInChannel := false
 
-	// iterate through every voice state only if we care about the users
-	if !ignoreUsers {
-		for _, voiceState := range guild.VoiceStates {
+	for _, voiceState := range guild.VoiceStates {
+		if voiceState.ChannelID == studioID {
 			// if the state represents a user in the studio that isn't a forwarder, increment the number
-			if voiceState.ChannelID == studioID && !utils.StringSliceContains(forwarderID, voiceState.UserID) &&
-				voiceState.UserID != userSession.State.User.ID {
+			if !utils.StringSliceContains(forwarderID, voiceState.UserID) {
 				numInStudio++
+			}
+
+			// if the state represents the user bot, then we won't re-join and decrement the num
+			if voiceState.UserID == userSession.State.User.ID {
+				isUserBotInChannel = true
+				numInStudio--
 			}
 		}
 	}
 
 	// if nobody is in the studio, it's autoplayJob time!
 	controlRoomID := config.GetString(cfg.ChannelControlRoom)
-	if numInStudio == 0 {
+	if numInStudio == 0 || ignoreUsers {
 		// join the studio
-		if join == nil {
+		if join == nil && !isUserBotInChannel {
 			join, err = userSession.ChannelVoiceJoin(guild.ID, studioID, true, false)
 			if err != nil {
 				autoplayLogger.WithError(err).Error("An error occurred whilst joining the studio!")
