@@ -6,6 +6,7 @@ import (
 
 	"github.com/StAndrewsRadio/starbot-admin/cfg"
 	"github.com/StAndrewsRadio/starbot-admin/db"
+	"github.com/StAndrewsRadio/starbot-admin/utils"
 	"github.com/bwmarrin/discordgo"
 	"github.com/sirupsen/logrus"
 	"github.com/tidwall/buntdb"
@@ -78,7 +79,7 @@ func swapMemberChunkReceived(session *discordgo.Session, chunk *discordgo.GuildM
 			if err != nil {
 				swapLogger.WithError(err).Error("An error occurred whilst adding the on air role to a user.")
 			}
-		} else {
+		} else if utils.StringSliceContains(member.Roles, onAirRole) {
 			// remove the on air role
 			err := session.GuildMemberRoleRemove(chunk.GuildID, member.User.ID, onAirRole)
 			if err != nil {
