@@ -58,6 +58,8 @@ const (
 	MsgCmdUninvite           = "msg.uninviteUninvited"
 	MsgCmdUnregisterNotFound = "msg.unregisterNoShowFound"
 	MsgCmdUnregisterDeleted  = "msg.unregisterShowDeleted"
+	MsgCmdAddHostNotHost     = "msg.addHostNotHost"
+	MsgCmdAddHostDone        = "msg.addHostDone"
 
 	MiscCurrentListenersUrl = "misc.listenersUrl"
 )

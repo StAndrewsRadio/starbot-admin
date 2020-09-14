@@ -45,6 +45,7 @@ func New(config *cfg.Config, database *db.Database, emailer *utils.Emailer, us *
 	}
 
 	// fill in commands
+	commandMap["addhost"] = cmdAddHost{mgr}
 	commandMap["autoplay"] = cmdAutoplay{mgr}
 	commandMap["confirm"] = cmdConfirm{mgr}
 	commandMap["embedshows"] = cmdEmbedShows{mgr}
@@ -52,6 +53,7 @@ func New(config *cfg.Config, database *db.Database, emailer *utils.Emailer, us *
 	commandMap["invite"] = cmdInvite{mgr}
 	commandMap["listeners"] = cmdListeners{mgr}
 	commandMap["register"] = cmdRegister{mgr}
+	commandMap["removehost"] = cmdRemoveHost{mgr}
 	commandMap["show"] = cmdShow{mgr}
 	commandMap["uninvite"] = cmdUninvite{mgr}
 	commandMap["unregister"] = cmdUnregister{mgr}

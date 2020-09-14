@@ -113,3 +113,14 @@ func FormatUserList(userList []string) string {
 
 	return output
 }
+
+// Gets the index of a string in a slice
+func StringSliceIndexOf(element string, slice []string) int {
+	for k, v := range slice {
+		if element == v {
+			return k
+		}
+	}
+
+	return -1
+}
