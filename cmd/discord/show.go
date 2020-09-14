@@ -28,7 +28,7 @@ func (cmdShow) syntax() string {
 }
 
 func (cmdShow cmdShow) handler(session *discordgo.Session, message *discordgo.MessageCreate) error {
-	args := strings.Split(message.Content, " ")
+	args := strings.Fields(message.Content)
 
 	// syntax check
 	if len(args) != 3 {

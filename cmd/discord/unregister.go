@@ -33,7 +33,7 @@ func (cmdUnregister) syntax() string {
 func (cmd cmdUnregister) handler(session *discordgo.Session, message *discordgo.MessageCreate) error {
 	// permission check
 	if utils.IsSenderInRole(session, message, cmd.GetString(cfg.RoleModerator)) {
-		args := strings.Split(message.Content, " ")
+		args := strings.Fields(message.Content)
 
 		// syntax check
 		if len(args) != 3 {

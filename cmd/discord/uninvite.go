@@ -30,7 +30,7 @@ func (cmd cmdUninvite) handler(session *discordgo.Session, message *discordgo.Me
 	if utils.IsSenderInRole(session, message, cmd.GetString(cfg.RoleOnAir)) ||
 		utils.IsSenderInRole(session, message, cmd.GetString(cfg.RoleModerator)) {
 		// syntax check
-		args := strings.Split(message.Content, " ")
+		args := strings.Fields(message.Content)
 		if len(args) != 2 || len(message.Mentions) != 1 {
 			_, err := session.ChannelMessageSend(message.ChannelID, cmd.GetString(cfg.MsgSyntaxError)+
 				cmd.syntax())

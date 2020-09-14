@@ -1,6 +1,10 @@
 package utils
 
-import "math/rand"
+import (
+	"math/rand"
+	"strings"
+	"unicode"
+)
 
 var (
 	alphabet = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -46,4 +50,39 @@ func RandomString(length int) string {
 	}
 
 	return string(result)
+}
+
+// Splits a string using FieldsFunc and a function that will only split n number of times
+func FieldsN(s string, n int) []string {
+	splits, lastResult := 0, false
+	splitFunc := func(c rune) bool {
+		if unicode.IsSpace(c) && splits < n {
+			lastResult = true
+		} else {
+			if lastResult == true {
+				splits++
+			}
+
+			lastResult = false
+		}
+
+		return lastResult
+	}
+
+	return strings.FieldsFunc(s, splitFunc)
+}
+
+// Checks if two string slices have equal contents
+func StringSliceEquals(s1, s2 []string) bool {
+	if len(s1) != len(s2) {
+		return false
+	}
+
+	for i := range s1 {
+		if s1[i] != s2[i] {
+			return false
+		}
+	}
+
+	return true
 }

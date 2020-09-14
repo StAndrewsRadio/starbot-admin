@@ -2,7 +2,6 @@ package discord
 
 import (
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/StAndrewsRadio/starbot-admin/cfg"
@@ -32,7 +31,7 @@ func (cmdRegister) syntax() string {
 func (cmd cmdRegister) handler(session *discordgo.Session, message *discordgo.MessageCreate) error {
 	// perm check
 	if utils.IsSenderInRole(session, message, cmd.GetString(cfg.RoleModerator)) {
-		args := strings.SplitN(message.Content, " ", 5)
+		args := utils.FieldsN(message.Content, 4)
 
 		// syntax check
 		if len(args) != 5 {

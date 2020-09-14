@@ -30,7 +30,7 @@ func (cmdInvite cmdInvite) handler(session *discordgo.Session, message *discordg
 	if utils.IsSenderInRole(session, message, cmdInvite.GetString(cfg.RoleOnAir)) ||
 		utils.IsSenderInRole(session, message, cmdInvite.GetString(cfg.RoleModerator)) {
 		// syntax check
-		args := strings.Split(message.Content, " ")
+		args := strings.Fields(message.Content)
 		if len(args) != 2 || len(message.Mentions) != 1 {
 			_, err := session.ChannelMessageSend(message.ChannelID, cmdInvite.GetString(cfg.MsgSyntaxError)+
 				cmdInvite.syntax())
