@@ -20,7 +20,7 @@ var GlobalOptions struct {
 }
 
 func logWrapper(_, _ int, format string, a ...interface{}) {
-	logrus.Warnf(format, a)
+	logrus.Debugf(format, a)
 }
 
 func init() {
