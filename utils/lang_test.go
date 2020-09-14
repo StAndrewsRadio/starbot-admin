@@ -32,3 +32,28 @@ func TestFieldsN(t *testing.T) {
 		})
 	}
 }
+
+func TestFormatUserList(t *testing.T) {
+	tables := []struct {
+		name     string
+		input    []string
+		expected string
+	}{
+		{"nil", nil, ""},
+		{"empty", []string{}, ""},
+		{"one", []string{"cat"}, "<@cat>"},
+		{"two", []string{"cat", "dog"}, "<@cat> and <@dog>"},
+		{"three", []string{"cat", "dog", "fish"}, "<@cat>, <@dog> and <@fish>"},
+	}
+
+	for _, table := range tables {
+		t.Run(table.name, func(t *testing.T) {
+			t.Parallel()
+
+			actual := utils.FormatUserList(table.input)
+			if actual != table.expected {
+				t.Errorf("got '%s'; expected '%s'", actual, table.expected)
+			}
+		})
+	}
+}

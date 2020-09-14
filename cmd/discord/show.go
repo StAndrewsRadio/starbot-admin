@@ -2,6 +2,7 @@ package discord
 
 import (
 	"fmt"
+	"github.com/StAndrewsRadio/starbot-admin/utils"
 	"strings"
 	"time"
 
@@ -59,10 +60,11 @@ func (cmdShow cmdShow) handler(session *discordgo.Session, message *discordgo.Me
 			} else {
 				// we're good to show the info
 				text = fmt.Sprintf(cmdShow.GetString(cfg.MsgCmdShowFound), show.Day, show.Hour, show.Name,
-					show.KeyHost)
+					utils.FormatUserList(show.Hosts))
 			}
 
-			_, err = session.ChannelMessageSend(message.ChannelID, text)
+			_, err = session.ChannelMessageSendComplex(message.ChannelID,
+				&discordgo.MessageSend{Content: text, AllowedMentions: &discordgo.MessageAllowedMentions{}})
 			if err != nil {
 				return err
 			}

@@ -3,14 +3,15 @@ package db
 import (
 	"github.com/sirupsen/logrus"
 	"github.com/tidwall/buntdb"
+	"strings"
 )
 
 // Represents a single show that is broadcast on STAR.
 type Show struct {
-	KeyHost string
-	Day     string
-	Hour    string
-	Name    string
+	Hosts []string
+	Day   string
+	Hour  string
+	Name  string
 }
 
 // Gets a show from the database, given the time it starts.
@@ -50,7 +51,7 @@ func (database *Database) PutShow(show Show) (Show, bool, error) {
 		showTime := show.Day + " " + show.Hour
 
 		// set the new show
-		_, _, err = tx.Set(ShowPrefix+showTime+HostSuffix, show.KeyHost, nil)
+		_, _, err = tx.Set(ShowPrefix+showTime+HostSuffix, strings.Join(show.Hosts, ";"), nil)
 		if err != nil {
 			return err
 		}
@@ -108,7 +109,7 @@ func FillShowFromTransaction(show *Show, tx *buntdb.Tx) error {
 	}
 
 	// update the show
-	show.KeyHost = host
+	show.Hosts = strings.Split(host, ";")
 	show.Name = name
 
 	return nil

@@ -14,7 +14,7 @@ import (
 
 var (
 	onAirRole    string
-	newKeyHost   string
+	newHosts     []string
 	handlerAdded bool
 	wg           sync.WaitGroup
 
@@ -45,10 +45,10 @@ func SwapJob(database *db.Database, session *discordgo.Session, config *cfg.Conf
 
 	// set or clear the new key host
 	if err == buntdb.ErrNotFound {
-		newKeyHost = ""
+		newHosts = nil
 	} else {
 		//noinspection GoNilness (ide being dumb, err must be nil at this point)
-		newKeyHost = newShow.KeyHost
+		newHosts = newShow.Hosts
 	}
 
 	// wait for the chunks to all come through
@@ -63,7 +63,7 @@ func SwapJob(database *db.Database, session *discordgo.Session, config *cfg.Conf
 
 	logrus.Debug("Waiting for chunk responses...")
 	wg.Wait()
-	return nil, newKeyHost != ""
+	return nil, newHosts != nil
 }
 
 // Iterates through all members, removing the role from those that do not match the new key host and adding the role
@@ -73,7 +73,7 @@ func swapMemberChunkReceived(session *discordgo.Session, chunk *discordgo.GuildM
 		Debug("Guild members chunk received!")
 
 	for _, member := range chunk.Members {
-		if member.User.ID == newKeyHost {
+		if utils.StringSliceContains(newHosts, member.User.ID) {
 			// add the on air role
 			err := session.GuildMemberRoleAdd(chunk.GuildID, member.User.ID, onAirRole)
 			if err != nil {

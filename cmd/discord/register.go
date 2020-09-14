@@ -72,10 +72,10 @@ func (cmd cmdRegister) handler(session *discordgo.Session, message *discordgo.Me
 				}
 
 				oldShow, replaced, err := cmd.PutShow(db.Show{
-					KeyHost: user,
-					Day:     day,
-					Hour:    hour,
-					Name:    name,
+					Hosts: []string{user},
+					Day:   day,
+					Hour:  hour,
+					Name:  name,
 				})
 				if err != nil {
 					return err
@@ -83,8 +83,8 @@ func (cmd cmdRegister) handler(session *discordgo.Session, message *discordgo.Me
 
 				if replaced {
 					_, err = session.ChannelMessageSend(message.ChannelID,
-						fmt.Sprintf(cmd.GetString(cfg.MsgCmdRegisterReplaced), user, name, day, hour,
-							oldShow.KeyHost, oldShow.Name))
+						fmt.Sprintf(cmd.GetString(cfg.MsgCmdRegisterReplaced), user, name, day, hour, oldShow.Name,
+							utils.FormatUserList(oldShow.Hosts)))
 				} else {
 					_, err = session.ChannelMessageSend(message.ChannelID,
 						fmt.Sprintf(cmd.GetString(cfg.MsgCmdRegisterNewShow), user, name, day, hour))

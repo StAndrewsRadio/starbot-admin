@@ -86,3 +86,30 @@ func StringSliceEquals(s1, s2 []string) bool {
 
 	return true
 }
+
+// Formats a list of discord users
+func FormatUserList(userList []string) string {
+	// check nil input
+	if userList == nil || len(userList) == 0 {
+		return ""
+	}
+
+	output := ""
+
+	// create list
+	for _, user := range userList {
+		output += "<@" + user + ">, "
+	}
+
+	// remove trailing comma
+	output = output[:len(output)-2]
+
+	// get last index of ", "
+	index := strings.LastIndex(output, ", ")
+	if index != -1 {
+		// replace it with an " and "
+		output = output[:index] + " and " + output[index+2:]
+	}
+
+	return output
+}
