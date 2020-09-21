@@ -50,7 +50,7 @@ func (cmd cmdConfirm) handler(session *discordgo.Session, message *discordgo.Mes
 				return err
 			}
 
-			err = session.GuildMemberRoleAdd(message.GuildID, message.Author.ID, cmd.GetString(cfg.RoleVerified))
+			err = session.GuildMemberRoleAdd(cmd.GetString(cfg.GeneralGuild), message.Author.ID, cmd.GetString(cfg.RoleVerified))
 			if err != nil {
 				return err
 			}

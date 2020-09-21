@@ -52,7 +52,7 @@ func (cmd cmdVerify) handler(session *discordgo.Session, message *discordgo.Mess
 
 				// don't do anything if it's already taken
 				if taken {
-					member, err := session.GuildMember(message.GuildID, takenBy)
+					member, err := session.GuildMember(cmd.GetString(cfg.GeneralGuild), takenBy)
 					if err != nil {
 						return err
 					}

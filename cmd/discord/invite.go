@@ -40,7 +40,7 @@ func (cmdInvite cmdInvite) handler(session *discordgo.Session, message *discordg
 		} else {
 			user := message.Mentions[0]
 
-			err := session.GuildMemberRoleAdd(message.GuildID, user.ID, cmdInvite.GetString(cfg.RoleOnAir))
+			err := session.GuildMemberRoleAdd(cmdInvite.GetString(cfg.GeneralGuild), user.ID, cmdInvite.GetString(cfg.RoleOnAir))
 			if err != nil {
 				return err
 			}

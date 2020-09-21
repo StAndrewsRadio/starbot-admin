@@ -83,7 +83,7 @@ func (cmd cmdAddHost) handler(session *discordgo.Session, message *discordgo.Mes
 		}
 
 		// give them the role
-		err = session.GuildMemberRoleAdd(message.GuildID, user, cmd.GetString(cfg.RoleVerified))
+		err = session.GuildMemberRoleAdd(cmd.GetString(cfg.GeneralGuild), user, cmd.GetString(cfg.RoleVerified))
 		if err != nil {
 			return err
 		}

@@ -53,7 +53,7 @@ func (cmd cmdRegister) handler(session *discordgo.Session, message *discordgo.Me
 				_, err := time.Parse(db.TimeFormat, day+" "+hour)
 
 				// check they are verified
-				if !utils.IsUserInRole(session, message.GuildID, user, cmd.GetString(cfg.RoleVerified)) {
+				if !utils.IsUserInRole(session, cmd.GetString(cfg.GeneralGuild), user, cmd.GetString(cfg.RoleVerified)) {
 					_, err := session.ChannelMessageSend(message.ChannelID, cmd.GetString(cfg.MsgCmdRegisterWrongRole))
 					return err
 				}

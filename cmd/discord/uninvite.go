@@ -40,7 +40,7 @@ func (cmd cmdUninvite) handler(session *discordgo.Session, message *discordgo.Me
 		} else {
 			user := message.Mentions[0]
 
-			err := session.GuildMemberRoleRemove(message.GuildID, user.ID, cmd.GetString(cfg.RoleOnAir))
+			err := session.GuildMemberRoleRemove(cmd.GetString(cfg.GeneralGuild), user.ID, cmd.GetString(cfg.RoleOnAir))
 			if err != nil {
 				return err
 			}

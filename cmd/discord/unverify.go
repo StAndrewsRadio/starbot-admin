@@ -46,7 +46,7 @@ func (cmd cmdUnverify) handler(session *discordgo.Session, message *discordgo.Me
 				return err
 			}
 
-			err = session.GuildMemberRoleRemove(message.GuildID, userID, cmd.GetString(cfg.RoleVerified))
+			err = session.GuildMemberRoleRemove(cmd.GetString(cfg.GeneralGuild), userID, cmd.GetString(cfg.RoleVerified))
 			if err != nil {
 				return err
 			}
