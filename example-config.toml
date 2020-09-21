@@ -69,6 +69,9 @@ unregisterNoShowFound = "There is no show registered at that time."
 unregisterShowDeleted = "The show on %s at %s has been unregistered."
 addHostNotHost        = "Sorry, you are not the host of that show so you can't modify the hosts."
 addHostDone           = "All done! Your show is now hosted by %s."
+checkEmailNotInList   = "That email address is not within the list of allowed email addresses."
+checkEmailNotLinked   = "That email address is within the list of allowed email addresses but is not linked to a user yet."
+checkEmailLinked      = "That email address is linked to <@%s>."
 
 [misc]
 listenersUrl = "http://example.com/current_listeners.php"

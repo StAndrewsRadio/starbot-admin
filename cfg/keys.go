@@ -60,6 +60,9 @@ const (
 	MsgCmdUnregisterDeleted  = "msg.unregisterShowDeleted"
 	MsgCmdAddHostNotHost     = "msg.addHostNotHost"
 	MsgCmdAddHostDone        = "msg.addHostDone"
+	MsgCmdEmailNotInList     = "msg.checkEmailNotInList"
+	MsgCmdEmailNotLinked     = "msg.checkEmailNotLinked"
+	MsgCmdEmailLinked        = "msg.checkEmailLinked"
 
 	MiscCurrentListenersUrl = "misc.listenersUrl"
 )
