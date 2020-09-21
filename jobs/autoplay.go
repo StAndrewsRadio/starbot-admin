@@ -1,6 +1,7 @@
 package jobs
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/StAndrewsRadio/starbot-admin/cfg"
@@ -97,9 +98,9 @@ func StartAutoplay(session, userSession *discordgo.Session, config *cfg.Config, 
 		}
 	} else {
 		// there's people in the studio but someone requested auto play?
-		_, err := session.ChannelMessageSend(controlRoomID, "Something has requested me to start autoplay "+
-			"but there's people here in the studio. Are you sure you're playing music or talking? Message <@&"+
-			config.GetString(cfg.RoleSupport)+"> if you need a hand.")
+		_, err := session.ChannelMessageSendComplex(controlRoomID, &discordgo.MessageSend{
+			Content:         fmt.Sprintf(config.GetString(cfg.AutoplayUsersInStudio), config.GetString(cfg.RoleModerator)),
+			AllowedMentions: &discordgo.MessageAllowedMentions{}})
 		if err != nil {
 			autoplayLogger.WithError(err).
 				Error("An error occurred whilst sending a message.")

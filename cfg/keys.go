@@ -24,15 +24,15 @@ const (
 	RoleVerified  = "roles.verified"
 	RoleModerator = "roles.moderator"
 	RoleOnAir     = "roles.onAir"
-	RoleSupport   = "roles.support"
 
 	ChannelStudio      = "channels.studio"
 	ChannelControlRoom = "channels.controlRoom"
 
-	AutoplayAnnounce     = "autoplay.announce"
-	AutoplayCommands     = "autoplay.commands"
-	AutoplayIgnoredUsers = "autoplay.ignoredUsers"
-	AutoplaySlotUp       = "autoplay.slotUp"
+	AutoplayAnnounce      = "autoplay.announce"
+	AutoplayCommands      = "autoplay.commands"
+	AutoplayIgnoredUsers  = "autoplay.ignoredUsers"
+	AutoplaySlotUp        = "autoplay.slotUp"
+	AutoplayUsersInStudio = "autoplay.usersInStudio"
 
 	VerificationUserUnverified = "verification.userUnverified"
 	VerificationEmailNotFound  = "verification.emailNotFound"
