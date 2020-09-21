@@ -66,8 +66,8 @@ showsembedReplaced    = "The shows embed has been moved to <#%s>. The old embed 
 uninviteUninvited     = "<@%s> has been booted out of the studio."
 unregisterNoShowFound = "There is no show registered at that time."
 unregisterShowDeleted = "The show on %s at %s has been unregistered."
-msg.addHostNotHost    = "Sorry, you are not the host of that show so you can't modify the hosts."
-msg.addHostDone       = "All done! Your show is now hosted by %s."
+addHostNotHost        = "Sorry, you are not the host of that show so you can't modify the hosts."
+addHostDone           = "All done! Your show is now hosted by %s."
 
 [misc]
 listenersUrl = "http://example.com/current_listeners.php"
