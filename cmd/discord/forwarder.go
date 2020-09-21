@@ -85,18 +85,18 @@ func (manager *CommandManager) CommandForwarder(session *discordgo.Session, mess
 		cmdString := utils.Substring(message.Content, manager.PrefixLength, spaceIndex)
 		cmdExecutor, ok := manager.Commands[cmdString]
 		if ok {
-			logrus.WithField("cmdString", cmdString).WithField("cmd", cmdExecutor.name()).
-				Debug("Executing command...")
+			entry := logrus.WithField("cmdString", cmdString).WithField("cmd", cmdExecutor.name())
+			entry.Debug("Executing command...")
 
 			err, str := cmdExecutor.handler(session, message), "There was an error whilst executing that command!"
 
 			if err != nil {
 				_, secondErr := session.ChannelMessageSend(message.ChannelID, str+"\n"+err.Error())
 				if secondErr != nil {
-					logrus.WithError(secondErr).Error("There was an error whilst sending a message to the server!")
+					entry.WithError(secondErr).Error("There was an error whilst sending a message to the server!")
 				}
 
-				logrus.WithError(err).Error(str)
+				entry.WithError(err).Error(str)
 			}
 		}
 	}
