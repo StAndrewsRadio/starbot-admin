@@ -1,6 +1,9 @@
 package db
 
-import "github.com/tidwall/buntdb"
+import (
+	"fmt"
+	"github.com/tidwall/buntdb"
+)
 
 type Database struct {
 	db *buntdb.DB
@@ -22,6 +25,8 @@ const (
 
 	VerificationCodeToUser  = "verification:%s:user"
 	VerificationCodeToEmail = "verification:%s:email"
+
+	Custom = "custom:%s"
 )
 
 func Open(path string) (*Database, error) {
@@ -84,4 +89,22 @@ func (database *Database) GetShowsEmbed() (string, string, error) {
 	err = tx.Rollback()
 
 	return channelID, messageID, err
+}
+
+// Gets some custom string stored in the database, returning the fallback if not found.
+func (database *Database) GetCustomString(key, fallback string) (string, error) {
+	tx, err := database.db.Begin(false)
+	if err != nil {
+		return "", err
+	}
+
+	custom, err := tx.Get(fmt.Sprintf(Custom, key))
+
+	if err == buntdb.ErrNotFound {
+		custom = fallback
+	}
+
+	err = tx.Rollback()
+
+	return custom, err
 }

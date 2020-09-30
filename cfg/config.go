@@ -44,3 +44,8 @@ func (config *Config) GetBool(key string) bool {
 func (config *Config) GetInt(key string) int64 {
 	return config.tree.Get(key).(int64)
 }
+
+// Gets a float from the config, given a key.
+func (config *Config) GetFloat(key string) float64 {
+	return config.tree.Get(key).(float64)
+}

@@ -3,6 +3,7 @@ package triggers
 import (
 	"context"
 	"fmt"
+	"github.com/StAndrewsRadio/starbot-admin/db"
 	"net/http"
 	"time"
 
@@ -16,17 +17,19 @@ var (
 	server                  *http.Server
 	botSession, userSession *discordgo.Session
 	config                  *cfg.Config
+	database                *db.Database
 )
 
 type Handler struct {
 }
 
 // Sets the triggers http server up
-func SetupTriggers(bs, us *discordgo.Session, c *cfg.Config) {
+func SetupTriggers(bs, us *discordgo.Session, c *cfg.Config, db *db.Database) {
 	// store stuff
 	botSession = bs
 	userSession = us
 	config = c
+	database = db
 	accessPassword = config.GetString(cfg.TriggersPassword)
 
 	server = &http.Server{Addr: config.GetString(cfg.TriggersAddress), Handler: Handler{}}

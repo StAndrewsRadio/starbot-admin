@@ -1,13 +1,12 @@
 package jobs
 
 import (
-	"fmt"
-	"time"
-
 	"github.com/StAndrewsRadio/starbot-admin/cfg"
+	"github.com/StAndrewsRadio/starbot-admin/db"
 	"github.com/StAndrewsRadio/starbot-admin/utils"
 	"github.com/bwmarrin/discordgo"
 	"github.com/sirupsen/logrus"
+	"time"
 )
 
 var (
@@ -16,8 +15,12 @@ var (
 	running        = false
 )
 
+const (
+	LastNagged = "lastnagged"
+)
+
 // Checks if the studio voice channel is empty and plays some music if it is.
-func StartAutoplay(session, userSession *discordgo.Session, config *cfg.Config, ignoreUsers, isSlotUp bool) {
+func StartAutoplay(session, userSession *discordgo.Session, config *cfg.Config, db *db.Database, ignoreUsers, isSlotUp bool) {
 	if running {
 		autoplayLogger.Warning("Something triggered the job whilst it was already running!")
 		return
@@ -96,14 +99,38 @@ func StartAutoplay(session, userSession *discordgo.Session, config *cfg.Config, 
 					Error("An error occurred whilst sending a command.")
 			}
 		}
-	} else {
-		// there's people in the studio but someone requested auto play?
-		_, err := session.ChannelMessageSendComplex(controlRoomID, &discordgo.MessageSend{
-			Content:         fmt.Sprintf(config.GetString(cfg.AutoplayUsersInStudio), config.GetString(cfg.RoleModerator)),
-			AllowedMentions: &discordgo.MessageAllowedMentions{}})
-		if err != nil {
-			autoplayLogger.WithError(err).
-				Error("An error occurred whilst sending a message.")
+	} else { // there's people in the studio but someone requested auto play?
+		nagCooldown, shouldNag := config.GetFloat(cfg.AutoplayNagCooldown), false
+
+		// only need to do anything if the nag cooldown is set
+		if nagCooldown > 0 {
+			lastNagged, err := db.GetCustomString(LastNagged, "")
+
+			if err != nil {
+				shouldNag = true
+				autoplayLogger.WithError(err).Error("An error occurred whilst getting the last nagged time, ignoring it!")
+			} else {
+				// if there's no last nagged then just nag
+				if lastNagged == "" {
+					shouldNag = true
+				} else {
+					lastNaggedTime, err := time.Parse(time.UnixDate, lastNagged)
+					if err != nil {
+						shouldNag = true
+						autoplayLogger.WithError(err).Error("An error occurred whilst parsing the last nagged time, ignoring it!")
+					} else {
+						shouldNag = time.Now().Sub(lastNaggedTime).Seconds() > nagCooldown
+					}
+				}
+			}
+
+			if shouldNag {
+				_, err := session.ChannelMessageSend(controlRoomID, config.GetString(cfg.AutoplayUsersInStudio))
+				if err != nil {
+					autoplayLogger.WithError(err).
+						Error("An error occurred whilst sending a message.")
+				}
+			}
 		}
 	}
 

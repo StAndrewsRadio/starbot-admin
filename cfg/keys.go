@@ -33,6 +33,7 @@ const (
 	AutoplayIgnoredUsers  = "autoplay.ignoredUsers"
 	AutoplaySlotUp        = "autoplay.slotUp"
 	AutoplayUsersInStudio = "autoplay.usersInStudio"
+	AutoplayNagCooldown   = "autoplay.nagCooldown"
 
 	VerificationUserUnverified = "verification.userUnverified"
 	VerificationEmailNotFound  = "verification.emailNotFound"

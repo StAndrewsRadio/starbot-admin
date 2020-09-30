@@ -39,7 +39,8 @@ announce      = "As there's nobody in the studio at the moment, I'm going to sta
 slotUp        = "As the hour is over and there's no upcoming show, I'm going to start autoplay."
 commands      = [ "LIST", " COMMANDS", "HERE" ]
 ignoredUsers  = [ "FORWARDER BOT HERE", "MUSIC BOT HERE" ]
-usersInStudio = "I've detected some silence. Are you sure you're playing music or talking? Message <@%s> if you need a hand."
+usersInStudio = "I've detected some silence. Are you sure you're playing music or talking? Message support if you need a hand."
+nagCooldown   = 30
 
 [verification]
 userUnverified     = "The email address has been freed and the user who was registered with that email has been unverified."

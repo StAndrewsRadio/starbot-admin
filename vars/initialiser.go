@@ -80,7 +80,7 @@ func InitialiseStarbot(opts ...StarbotOption) (*Starbot, error) {
 
 	// initialise the trigger system
 	if starbot.withTriggers {
-		go triggers.SetupTriggers(starbot.BotSession, starbot.UserSession, starbot.Config)
+		go triggers.SetupTriggers(starbot.BotSession, starbot.UserSession, starbot.Config, starbot.Database)
 	}
 
 	// clean exit
